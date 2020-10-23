@@ -1,6 +1,6 @@
 from django.shortcuts import render
 #from django.template import loader
-#from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 #from django.core.mail import send_mail
 #from django.core import mail
 #from django.db import models
@@ -25,22 +25,18 @@ def contact_submit(request):
 
     message = message_template.substitute(NAME=v_name,EMAIL=v_email,SUBJECT=v_subject,MESSAGE=v_comment)
 
-    #send_mail("Portfolio Contact Form - " + v_subject, message,maitsuada@outlook.de", ['renansiqueira@gmail.com'],fail_silently=False,)
-
-    f = open("/home/renansiqueira/RenanPortfolio/Main/credentials.txt",'r')
-    url_adress = f.readline()
-    api_key = f.readline()
-    contact_details = f.readline()
+    f = open("/home/renansiqueira/RenanPortfolio/Main/credentials.txt",'rt')
+    mailgun = f.readlines()
     f.close()
 
-    requests.post(url_adress,
-    	auth=("api", api_key),
-    	data={"from": contact_details,
-    		"to": ["renansiqueira@gmail.com"],
-    		"subject": "Portfolio Contact Form - " + v_subject,
-    		"text": message})
+    resp = requests.post(mailgun[0][0:-1],auth=("api", mailgun[1][0:-1]),data={"from": mailgun[2],"to": ["renansiqueira@gmail.com"],"subject": "Portfolio Contact Form - " + v_subject,"text": message})
 
-    return HttpResponseRedirect("/1#contact")
+    if resp.status_code == 200:
+        return HttpResponseRedirect("/1#contact")
+    else:
+        return HttpResponseRedirect("/2#contact")
+
+
 
 
 
