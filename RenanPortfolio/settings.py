@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import django_heroku
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -21,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-f = open("/home/renansiqueira/RenanPortfolio/Main/credentials.txt",'r')
+f = open(BASE_DIR / "RenanPortfolio/key.txt",'r')
 key = f.readline()
 f.close()
 SECRET_KEY = key
@@ -29,7 +30,7 @@ SECRET_KEY = key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['renansiqueira.pythonanywhere.com']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Main',
+    'Main'
 ]
 
 MIDDLEWARE = [
@@ -123,7 +124,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'   #Is what goes to the static tag in the HTML
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    ]
 
-
+# Activate Django-Heroku.
+django_heroku.settings(locals())
 
 

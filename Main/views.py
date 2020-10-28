@@ -7,12 +7,15 @@ from django.http import HttpResponseRedirect
 #import smtplib
 from string import Template
 import requests
+from django.conf import settings
+from pathlib import Path
 #from email.mime.multipart import MIMEMultipart
 #from email.mime.text import MIMEText
 
 def index(request,msg_sent_bool=0):
     context = {'msg_sent_bool': str(msg_sent_bool)}
     return render(request,'Main/index.html',context)
+
 
 def contact_submit(request):
 
@@ -25,7 +28,7 @@ def contact_submit(request):
 
     message = message_template.substitute(NAME=v_name,EMAIL=v_email,SUBJECT=v_subject,MESSAGE=v_comment)
 
-    f = open("/home/renansiqueira/RenanPortfolio/Main/credentials.txt",'rt')
+    f = open(settings.BASE_DIR / "Main/credentials.txt",'rt')
     mailgun = f.readlines()
     f.close()
 
