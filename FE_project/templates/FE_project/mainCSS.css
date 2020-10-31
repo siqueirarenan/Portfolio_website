@@ -1,0 +1,42 @@
+
+input.long_field{
+    margin-left: 8px;
+    margin-right:16px;
+    margin-top: 5px;
+    width: 60px !important;
+    height: 25px;
+    text-align: center;
+    padding-right: 3px !important;
+    padding-left: 3px !important;
+}
+input.short_field{
+    margin-left: 2px;
+    margin-right:2px;
+    margin-top: 5px;
+    width: 38px !important;
+    height: 25px;
+    text-align: center;
+    padding-right: 1px !important;
+    padding-left: 1px !important;
+}
+.bp{
+    margin-left: 2px;
+    margin-right:2px;
+    padding-top: 0px  !important;
+    padding-bottom: 8px  !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    height: 25px;
+    width: 38px!important;
+    margin-top: 5px;
+}
+.nodesField{
+    width:82px !important;
+    margin-left:16px !important;
+    margin-right:2px;
+    margin-top: 5px;
+    height: 25px;
+    text-align: center;
+    padding-right: 1px !important;
+    padding-left: 1px !important;
+}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>loads</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="mainCSS.css">
+    <script src="mainJS.js"></script>
+</head>
+<body class="w3-teal">
+<div class="w3-bar w3-teal w3-top">
+    <div class="w3-bar-item w3-padding" style="margin-right:42px">Loads</div>
+    <button class="w3-bar-item w3-button w3-padding" onclick="add_condition()">+</button>
+    <button class="w3-bar-item w3-button w3-padding" onclick="remove_condition()">-</button>
+</div>
+<div class="w3-bar w3-teal" style="height:35px"></div>
+<div class="w3-bar w3-teal" id="Force1">
+    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round nodesField"
+           type="text" id="FF1" max="99" min="0" placeholder="Nodes">
+    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fx1" max="99" min="0" placeholder="Fx">
+    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fy1" max="99" min="0" placeholder="Fy">
+    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fz1" max="99" min="0" placeholder="Fz">
+</div>
+</body>
+</html>
