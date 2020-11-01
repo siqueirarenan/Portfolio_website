@@ -1,4 +1,3 @@
-
 function setSteel(){
     document.getElementById("material").innerHTML = "Steel"
     document.getElementById("Emodul").value = "210"
@@ -47,3 +46,6 @@ function buttonBC(id){
         document.getElementById(id).style = ""
     }
 }
+
+
+

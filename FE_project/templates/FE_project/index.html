@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="mainCSS.css">
     <link rel="icon" type="image/png" href="favicon.png"/>
-
+    <script src="seen.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
+    <script type="text/coffeescript" src="Coffeescript.coffee"></script>
 </head>
 
 <body>
@@ -93,10 +95,10 @@
                                 w3-padding w3-button w3-right" style="width:50%">
                         <a id="material">Steel</a>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
-                            <a onclick="setSteel()" class="w3-bar-item w3-button">Steel</a>
-                            <a onclick="setAluminum()" class="w3-bar-item w3-button">Aluminum</a>
-                            <a onclick="setSilver()" class="w3-bar-item w3-button">Silver</a>
-                            <a onclick="setUserMat()" class="w3-bar-item w3-button">User-defined</a>
+                            <a onclick="setSteel();updateColor(0.5, 0.9, 0.8)" class="w3-bar-item w3-button">Steel</a>
+                            <a onclick="setAluminum();updateColor(1, 1, 0.9)" class="w3-bar-item w3-button">Aluminum</a>
+                            <a onclick="setSilver();updateColor(1, 1, 1)" class="w3-bar-item w3-button">Silver</a>
+                            <a onclick="setUserMat();updateColor(0.1, 0.5, 0.5)" class="w3-bar-item w3-button">User-defined</a>
                         </div>
                     </div>
                 </div>
@@ -110,20 +112,26 @@
                         <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
                                type="number" id="Poisson" max="1" min="0">
                 </div>
+                <!--Shape-->
                 <div class="w3-bar w3-brown">
                     <div class="w3-bar-item w3-padding" style="margin-right:25px">Shape</div>
                     <div class="w3-bar-item w3-padding" style="margin-right:19px">MBB beam</div>
                 </div>
                 <div class="w3-bar w3-brown">
                     <div class="w3-bar-item w3-padding">Dimensions</div>
-                    <input onchange="#" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
-                           type="number" id="mbb_width" max="99" min="0" placeholder="W">
-                    <input onchange="#" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
-                           type="number" id="mbb_height" max="99" min="0" placeholder="H">
-                    <input onchange="#" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
-                           type="number" id="mbb_length" max="99" min="0" placeholder="L">
+                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_width" max="99" min="0" placeholder="W" value="40">
+                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_height" max="99" min="0" placeholder="H" value="30">
+                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_length" max="99" min="0" placeholder="L" value="80">
                 </div>
-                <!--Loads-->
+                <div class="w3-bar w3-teal">
+                    <label class="w3-bar-item w3-padding" style="margin-right:29px">Element size</label>
+                    <input onchange="nodesCreation(this.value)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                           type="number" id="eleSize" max="20" min="1" value="15">
+                </div>
+                <!--Loads and boundaries-->
                 <div class="w3-bar w3-teal">
                     <iframe src="loads.html" style="height:120px;width:100%;border:0px solid #ccc;">
                     </iframe>
@@ -136,7 +144,7 @@
             </form>
             <div class="w3-col l6 m8 s12">
                 <!--Vizualization window -->
-
+                <svg width="500" height="500" id="seen-canvas"></svg>
             </div>
         </div>
     </div>
