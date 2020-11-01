@@ -46,6 +46,10 @@ function buttonBC(id){
         document.getElementById(id).style = ""
     }
 }
+function onload(){
+    document.getElementById('load_frame').contentWindow.updateLoads = updateLoads;
+    }
+
 
 
 

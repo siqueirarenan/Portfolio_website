@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="mainCSS.css">
     <script src="mainJS.js"></script>
+    <script src="seen.js"></script>
+    <script type="text/coffeescript" src="Coffeescript.coffee"></script>
 </head>
 <body class="w3-teal">
 <div class="w3-bar w3-teal w3-top">
@@ -15,14 +17,14 @@
 </div>
 <div class="w3-bar w3-teal" style="height:35px"></div>
 <div class="w3-bar w3-teal" id="Force1">
-    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round nodesField"
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round nodesField"
            type="text" id="FF1" max="99" min="0" placeholder="Nodes">
-    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fx1" max="99" min="0" placeholder="Fx">
-    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fy1" max="99" min="0" placeholder="Fy">
-    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fz1" max="99" min="0" placeholder="Fz">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fx1" max="99" min="0" placeholder="Fx" value="10">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fy1" max="99" min="0" placeholder="Fy" value="10">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fz1" max="99" min="0" placeholder="Fz" value="10">
 </div>
 </body>
 </html>

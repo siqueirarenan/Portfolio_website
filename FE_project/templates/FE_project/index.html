@@ -14,7 +14,7 @@
     <script type="text/coffeescript" src="Coffeescript.coffee"></script>
 </head>
 
-<body>
+<body onload="onload()">
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
@@ -105,12 +105,12 @@
                 <div class="w3-bar w3-teal">
                     <label class="w3-bar-item w3-padding">Young's Modulus</label>
                         <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                               type="number" id="Emodul" max="999" min="0">
+                               type="number" id="Emodul" max="999" min="0" value="210">
                 </div>
                 <div class="w3-bar w3-teal">
                     <div class="w3-bar-item w3-padding" style="margin-right:17px">Poisson's ratio</div>
                         <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                               type="number" id="Poisson" max="1" min="0">
+                               type="number" id="Poisson" max="1" min="0" value="0.3">
                 </div>
                 <!--Shape-->
                 <div class="w3-bar w3-brown">
@@ -128,12 +128,12 @@
                 </div>
                 <div class="w3-bar w3-teal">
                     <label class="w3-bar-item w3-padding" style="margin-right:29px">Element size</label>
-                    <input onchange="nodesCreation(this.value)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                    <input onchange="updateShape()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
                            type="number" id="eleSize" max="20" min="1" value="15">
                 </div>
                 <!--Loads and boundaries-->
                 <div class="w3-bar w3-teal">
-                    <iframe src="loads.html" style="height:120px;width:100%;border:0px solid #ccc;">
+                    <iframe src="loads.html" style="height:120px;width:100%;border:0px solid #ccc;" id="load_frame">
                     </iframe>
                 </div>
                 <div class="w3-bar w3-teal">
@@ -144,7 +144,7 @@
             </form>
             <div class="w3-col l6 m8 s12">
                 <!--Vizualization window -->
-                <svg width="500" height="500" id="seen-canvas"></svg>
+                <canvas width="500" height="500" id="seen-canvas"></canvas>
             </div>
         </div>
     </div>
