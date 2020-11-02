@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Renan Siqueira - Portifolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta charset="UTF-8">
+    <script src="mainJS.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="mainCSS.css">
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <script src="seen.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
+    <script type="text/coffeescript" src="Coffeescript.coffee"></script>
+</head>
+
+<body onload="onload()">
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+    <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+        <a href="#home" class="w3-bar-item w3-button">Renan Siqueira <b>Portifolio</b></a>
+        <!-- Float links to the right. Hide them on small screens -->
+        <div class="w3-right w3-hide-small">
+            <a href="https://renansiqueira.herokuapp.com/#projects" class="w3-bar-item w3-button">Projects</a>
+            <a href="https://renansiqueira.herokuapp.com/#about" class="w3-bar-item w3-button ">About</a>
+            <a href="https://renansiqueira.herokuapp.com/#contact" class="w3-bar-item w3-button w3-hide-medium">Contact</a>
+        </div>
+    </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-wide w3-black" style="max-width:1564px;height:300px" id="home">
+    <div class="w3-display-left">
+        <h1 class="w3-xxlarge w3-text-white w3-margin-left w3-margin-top w3-margin-bottom w3-padding">
+            <span><b>FEA and Topology Optimization</b></span><br>
+            <span class="w3-hide-small">Web App</span>
+        </h1>
+    </div>
+    <div class="w3-display-bottomright w3-padding w3-text-white w3-padding-large w3-margin-bottom w3-hide-small" style="min-width:40%">
+        <a href="#app"><button class="w3-button w3-left w3-ripple w3-indigo w3-medium w3-wide
+        w3-padding-large w3-purple w3-block  w3-round-large">
+            <b>Try yourself!</b>
+        </button></a>
+    </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-padding" style="max-width:1564px">
+    <div class="w3-container w3-padding-16 ">
+        <p>
+        <br>The <b>Sight Reading Trainer</b> web application is a personal project for open-source music education. The purpose of the application is to
+        generate random notes on a music sheet while the user tries to play them on a connected MIDI device, measuring its performance ratio.
+        The notes generation is fully configurable, allowing the user to control the beats-per-second, key, signature, notes allowed, range and figures.
+        </p>
+        <div class="w3-container w3-right" >
+            <a href="https://github.com/siqueirarenan/Sight_Reading_Trainer" target="_blank">
+                <img src="git.png" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
+        </div>
+    </div>
+
+    <div class="w3-container w3-padding-16" >
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Development</h3>
+        <p>
+        This is a Java application and was developed using the technologies bellow. Fore more detail about the
+            deployment, please check this <a href="https://github.com/siqueirarenan/Sight_Reading_Trainer_Webapp/">Github repository</a>.
+        </p>
+        <div class="w3-container w3-center">
+            <div class="w3-row ">
+                <div class="w3-col l1 w3-hide-small w3-hide-medium"><p></p></div>
+                <div class="w3-col l2 m4 s6">
+                    <img class="w3-image" src="javafx.png" style="width:120px;padding-left:8px;padding-right:8px"></div>
+                <div class="w3-col l2 m4 s6">
+                    <img class="w3-image" src="jfugue.png" style="width:120px;padding-left:8px;padding-right:8px"></div>
+                <div class="w3-col l2 m4 s6">
+                    <img class="w3-image w3-black" src="jpro.png" style="width:120px;padding-left:8px;padding-right:8px"></div>
+                <div class="w3-col l2 m4 s6">
+                    <img class="w3-image" src="maven.png" style="width:120px;padding-left:8px;padding-right:8px"></div>
+                <div class="w3-col l2 m4 s6">
+                    <img class="w3-image " src="docker.png" style="width:120px;padding-left:8px;padding-right:8px"></div>
+            </div>
+        </div>
+    </div>
+
+<!-- App -->
+    <div class="w3-container w3-padding-32" id="app">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">The App</h3>
+        <!--FE_Project-->
+        <div class="w3-row-padding w3-content w3-mobile">
+            <!-- Input controls -->
+            <form class="w3-col l4 m4 s12" id="control_inputs" style="width:305px">
+                <!-- Materials -->
+                <div class="w3-bar w3-teal">
+                    <div class="w3-bar-item w3-padding w3-mobile">Material</div>
+                    <div class="w3-bar-item w3-mobile w3-dropdown-hover
+                                w3-padding w3-button w3-right" style="width:50%">
+                        <a id="material">Steel</a>
+                        <div class="w3-dropdown-content w3-bar-block w3-border">
+                            <a onclick="setSteel();updateColor(0.5, 0.9, 0.8)" class="w3-bar-item w3-button">Steel</a>
+                            <a onclick="setAluminum();updateColor(1, 1, 0.9)" class="w3-bar-item w3-button">Aluminum</a>
+                            <a onclick="setSilver();updateColor(1, 1, 1)" class="w3-bar-item w3-button">Silver</a>
+                            <a onclick="setUserMat();updateColor(0.1, 0.5, 0.5)" class="w3-bar-item w3-button">User-defined</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="w3-bar w3-teal">
+                    <label class="w3-bar-item w3-padding">Young's Modulus</label>
+                        <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                               type="number" id="Emodul" max="999" min="0" value="210">
+                </div>
+                <div class="w3-bar w3-teal">
+                    <div class="w3-bar-item w3-padding" style="margin-right:17px">Poisson's ratio</div>
+                        <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                               type="number" id="Poisson" max="1" min="0" value="0.3">
+                </div>
+                <!--Shape-->
+                <div class="w3-bar w3-brown">
+                    <div class="w3-bar-item w3-padding" style="margin-right:25px">Shape</div>
+                    <div class="w3-bar-item w3-padding" style="margin-right:19px">MBB beam</div>
+                </div>
+                <div class="w3-bar w3-brown">
+                    <div class="w3-bar-item w3-padding">Dimensions</div>
+                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_width" max="99" min="0" placeholder="W" value="40">
+                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_height" max="99" min="0" placeholder="H" value="30">
+                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_length" max="99" min="0" placeholder="L" value="80">
+                </div>
+                <div class="w3-bar w3-teal">
+                    <label class="w3-bar-item w3-padding" style="margin-right:29px">Element size</label>
+                    <input onchange="updateShape()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                           type="number" id="eleSize" max="20" min="1" value="15">
+                </div>
+                <!--Loads and boundaries-->
+                <div class="w3-bar w3-teal">
+                    <iframe src="loads.html" style="height:120px;width:100%;border:0px solid #ccc;" id="load_frame">
+                    </iframe>
+                </div>
+                <div class="w3-bar w3-teal">
+                    <iframe src="boundaries.html" style="height:120px;width:100%;border:0px solid #ccc;">
+                    </iframe>
+                </div>
+
+            </form>
+            <div class="w3-col l6 m8 s12" style="width:500px">
+                <!--Vizualization window -->
+                <canvas width="500" height="500" id="seen-canvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+    <p>Template by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">W3</a>. Designed by Renan Siqueira.</p>
+</footer>
+
+</body>
+
+</html>
+

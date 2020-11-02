@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>boundaries</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="mainCSS.css">
+    <script src="mainJS.js"></script>
+</head>
+<body class="w3-teal">
+<div class="w3-bar w3-teal w3-top">
+    <div class="w3-bar-item w3-padding">Boundaries</div>
+    <button class="w3-bar-item w3-button w3-padding" onclick="add_condition()">+</button>
+    <button class="w3-bar-item w3-button w3-padding" onclick="remove_condition()">-</button>
+</div>
+<div class="w3-bar w3-teal" style="height:35px"></div>
+<div class="w3-bar w3-teal" id="Boundary1">
+    <input onchange="#" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round nodesField"
+           type="text" id="BF1" max="99" min="0" placeholder="Nodes">
+    <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border"
+            onclick="buttonBC(this.id)" id="Bx1" value="">x</button>
+    <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border"
+            onclick="buttonBC(this.id)" id="By1" value="">y</button>
+    <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border"
+            onclick="buttonBC(this.id)" id="Bz1" value="">z</button>
+</div>
+</body>
+</html>
