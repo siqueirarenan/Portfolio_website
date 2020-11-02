@@ -48,6 +48,7 @@ function buttonBC(id){
 }
 function onload(){
     document.getElementById('load_frame').contentWindow.updateLoads = updateLoads;
+    document.getElementById('load_frame').contentWindow.removeLoads = removeLoads;
     }
 
 

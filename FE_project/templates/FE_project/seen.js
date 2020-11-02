@@ -184,10 +184,6 @@ seen.Matrix = (function() {
     return this;
   };
 
-  Matrix.prototype.myRotation = function(rm) {
-    return this.matrix(rm);
-  };
-
   Matrix.prototype.rotx = function(theta) {
     var ct, rm, st;
     ct = Math.cos(theta);
@@ -270,7 +266,7 @@ seen.Transformable = (function() {
     var fn, len1, method, o, ref;
     this.m = new seen.Matrix();
     this.baked = IDENTITY;
-    ref = ['scale', 'translate', 'rotx', 'roty', 'rotz', 'matrix', 'reset', 'bake', 'myRotation'];
+    ref = ['scale', 'translate', 'rotx', 'roty', 'rotz', 'matrix', 'reset', 'bake'];
     fn = (function(_this) {
       return function(method) {
         return _this[method] = function() {
@@ -2729,7 +2725,7 @@ seen.Shapes = {
     surfaces.push(back);
     return new seen.Shape('extrusion', surfaces);
   },
-      arrow: function(thickness, tailLength, tailWidth, headLength, headPointiness) {
+  arrow: function(thickness, tailLength, tailWidth, headLength, headPointiness) {
     var htw, points;
     if (thickness == null) {
       thickness = 1;

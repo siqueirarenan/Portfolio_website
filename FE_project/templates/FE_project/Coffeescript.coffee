@@ -160,12 +160,36 @@ root.updateLoads = (id) ->
     Loads_model.remove(Loads[i - 1])
     Loads[i - 1] = null
 
-    Loads[i - 1] = new seen.Shapes.arrow(2,30,1,10).fill('#000000').translate(-30-10,0,0).rotz(Math.PI).myRotation([parseInt(fx,10),0,0,0,parseInt(fy,10),0,0,0,parseInt(fz,10),0,0,0])
+    c = 1/(1+(fx))
+    norm = Math.sqrt((fx**2) + (fy**2) + (fz**2))
+    c = 1/(1+(fx/norm))
+
+    arrow = new seen.Shapes.arrow(1,10,1,3).fill('#000000').translate(-10-3,0,0).rotz(Math.PI)
+        .matrix([((norm**2)+c*(-(fy**2)-(fz**2)))/(norm**2), -fy/(norm), -fz/(norm),  0,
+                 fy/(norm) , ((norm**2)-c*(fy**2))/(norm**2) , (-c*fy*fz)/(norm**2) , 0,
+                 fz/(norm) , (-c*fy*fz)/(norm**2) , ((norm**2)-c*(fz**2))/(norm**2) , 0,
+                 0,0,0,1])
 
     if Ff.indexOf(",") > 0
         coord = Ff.split(",")
-        Loads[i - 1].translate(coord[0],coord[1],coord[2])
+        arrow.translate(coord[0],coord[1],coord[2])
+        Loads[i - 1] = arrow
+        Loads_model.add(arrow)
+    else
+        func = (x,y,z) -> y==30 and z==80    #!!!
+        load_group = Loads_model.append()
+        for n in Nodes
+            if func(n.x,n.y,n.z)
+                arrow.translate(n.x,n.y,n.z)
+                load_group.add(arrow)
+        Loads[i - 1] = load_group
 
-    Loads_model.add(Loads[i - 1])
+    context.render()
 
+root.removeLoads = ->
+    n_loads = document.getElementById("load_frame").contentWindow.document.body.children.length - 2
+    for count in [1..Loads.length]
+        if count > n_loads
+            Loads_model.remove(Loads[count-1])
+            Loads[count-1] = null
     context.render()
