@@ -16,15 +16,35 @@
     <button class="w3-bar-item w3-button w3-padding" onclick="remove_condition();removeLoads();">-</button>
 </div>
 <div class="w3-bar w3-teal" style="height:35px"></div>
-<div class="w3-bar w3-teal" id="Force1">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round nodesField"
-           type="text" id="FF1" max="99" min="0" placeholder="Nodes">
+<div class="w3-bar w3-teal" id="Force1" style="padding-left:16px">
     <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fx1" max="99" min="0" placeholder="Fx" value="10">
+           type="text" id="xf1" max="99" min="0" placeholder="x" value="0">
     <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fy1" max="99" min="0" placeholder="Fy" value="10">
+           type="text" id="yf1" max="99" min="0" placeholder="y" value="0">
     <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fz1" max="99" min="0" placeholder="Fz" value="10">
+           type="text" id="zf1" max="99" min="0" placeholder="z" value="0">
+
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fx1" max="99" min="-99" placeholder="Fx" value="10">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fy1" max="99" min="-99" placeholder="Fy" value="10">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fz1" max="99" min="-99" placeholder="Fz" value="10">
+</div>
+<div class="w3-bar w3-teal" id="Force2" style="padding-left:16px">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="text"  id="xf2" max="99" min="0" placeholder="x" value="">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="text" id="yf2" max="99" min="0" placeholder="y" value="">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="text" id="zf2" max="99" min="0" placeholder="z" value="">
+
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fx2" max="99" min="-99" placeholder="Fx" value="">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fy2" max="99" min="-99" placeholder="Fy" value="">
+    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fz2" max="99" min="-99" placeholder="Fz" value="">
 </div>
 </body>
 </html>

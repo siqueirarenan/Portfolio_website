@@ -130,6 +130,7 @@ root.updateShape = ->
            surf.dirty = true
     submodel.translate(-W/2,-H/2,-L/2)
     Loads_model.translate((W_old/2)-(W/2),(H_old/2)-(H/2),(L_old/2)-(L/2))
+    #!!! atualizar loads
 
     xform = seen.M().scale(Math.sqrt(W_old**2+H_old**2+L_old**2)/Math.sqrt(W**2+H**2+L**2))
     scene.model.transform(xform)
@@ -152,7 +153,9 @@ arrows_scale_factor = 1
 
 root.updateLoads = (id) ->
     i = String(id).substr(2,1)
-    Ff = document.getElementById("load_frame").contentWindow.document.getElementById("FF" + i).value
+    x_f = document.getElementById("load_frame").contentWindow.document.getElementById("xf" + i).value
+    y_f = document.getElementById("load_frame").contentWindow.document.getElementById("yf" + i).value
+    z_f = document.getElementById("load_frame").contentWindow.document.getElementById("zf" + i).value
     fx = document.getElementById("load_frame").contentWindow.document.getElementById("Fx" + i).value
     fy = document.getElementById("load_frame").contentWindow.document.getElementById("Fy" + i).value
     fz = document.getElementById("load_frame").contentWindow.document.getElementById("Fz" + i).value
@@ -164,26 +167,32 @@ root.updateLoads = (id) ->
     norm = Math.sqrt((fx**2) + (fy**2) + (fz**2))
     c = 1/(1+(fx/norm))
 
-    arrow = new seen.Shapes.arrow(1,10,1,3).fill('#000000').translate(-10-3,0,0).rotz(Math.PI)
-        .matrix([((norm**2)+c*(-(fy**2)-(fz**2)))/(norm**2), -fy/(norm), -fz/(norm),  0,
-                 fy/(norm) , ((norm**2)-c*(fy**2))/(norm**2) , (-c*fy*fz)/(norm**2) , 0,
-                 fz/(norm) , (-c*fy*fz)/(norm**2) , ((norm**2)-c*(fz**2))/(norm**2) , 0,
-                 0,0,0,1])
-
-    if Ff.indexOf(",") > 0
-        coord = Ff.split(",")
-        arrow.translate(coord[0],coord[1],coord[2])
-        Loads[i - 1] = arrow
-        Loads_model.add(arrow)
+    if ("=" in x_f) | (">" in x_f) | ("<" in x_f)
+        func_x = (x) -> eval("x".concat(x_f))
     else
-        func = (x,y,z) -> y==30 and z==80    #!!!
-        load_group = Loads_model.append()
-        for n in Nodes
-            if func(n.x,n.y,n.z)
-                arrow.translate(n.x,n.y,n.z)
-                load_group.add(arrow)
-        Loads[i - 1] = load_group
+        func_x = (x) -> x == parseInt(x_f)
+    if ("=" in y_f) | (">" in y_f) | ("<" in y_f)
+        func_y = (y) -> eval("y".concat(y_f))
+    else
+        func_y = (y) -> y == parseInt(y_f)
+    if ("=" in z_f) | (">" in z_f) | ("<" in z_f)
+        func_z = (z) -> eval("z".concat(z_f))
+    else
+        func_z = (z) -> z == parseInt(z_f)
 
+    load_group = Loads_model.append()
+    func = (x,y,z) -> func_x(x) & func_y(y) & func_z(z)
+    for n in Nodes
+        if func(n.x,n.y,n.z)
+            load_group.add(new seen.Shapes.arrow(1,(norm/8) + 2,1,3)
+                   .fill('#000000')
+                   .translate(-((norm/8) + 2)-3,0,0)
+                   .rotz(Math.PI)
+                   .matrix([((norm**2)+c*(-(fy**2)-(fz**2)))/(norm**2), -fy/(norm), -fz/(norm),  0,
+                            fy/(norm) , ((norm**2)-c*(fy**2))/(norm**2) , (-c*fy*fz)/(norm**2) , 0,
+                            fz/(norm) , (-c*fy*fz)/(norm**2) , ((norm**2)-c*(fz**2))/(norm**2) , 0,
+                            0,0,0,1]).translate(n.x,n.y,n.z))
+    Loads[i - 1] = load_group
     context.render()
 
 root.removeLoads = ->
@@ -193,3 +202,10 @@ root.removeLoads = ->
             Loads_model.remove(Loads[count-1])
             Loads[count-1] = null
     context.render()
+
+clone = (obj) ->
+   return obj  if obj is null or typeof (obj) isnt "object"
+   temp = new obj.constructor()
+   for key of obj
+       temp[key] = clone(obj[key])
+   temp

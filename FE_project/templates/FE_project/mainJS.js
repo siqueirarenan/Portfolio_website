@@ -33,7 +33,7 @@ function add_condition(){
     document.body.appendChild(cln)
 }
 function remove_condition(){
-    if (document.body.children.length > 3){
+    if (document.body.children.length > 4){
         document.body.lastChild.remove();
     }
 }
