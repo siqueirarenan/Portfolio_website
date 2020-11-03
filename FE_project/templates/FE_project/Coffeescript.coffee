@@ -1,5 +1,5 @@
-width  = 500
-height = 500
+width  = parseInt(document.getElementById("seen-canvas").width.baseVal.value)
+height = parseInt(document.getElementById("seen-canvas").height.baseVal.value)
 
 # Create empty scene and render context
 scene = new seen.Scene
@@ -129,8 +129,14 @@ root.updateShape = ->
         for surf in shape.surfaces
            surf.dirty = true
     submodel.translate(-W/2,-H/2,-L/2)
+
     Loads_model.translate((W_old/2)-(W/2),(H_old/2)-(H/2),(L_old/2)-(L/2))
-    #!!! atualizar loads
+    for id in [1..document.getElementById("load_frame").contentWindow.document.body.children.length - 2]
+        updateLoads("ff" + id)
+
+    Boundaries_model.translate((W_old/2)-(W/2),(H_old/2)-(H/2),(L_old/2)-(L/2))
+    for id in [1..document.getElementById("boundary_frame").contentWindow.document.body.children.length - 2]
+        updateBoundaries("ff" + id)
 
     xform = seen.M().scale(Math.sqrt(W_old**2+H_old**2+L_old**2)/Math.sqrt(W**2+H**2+L**2))
     scene.model.transform(xform)
@@ -148,8 +154,6 @@ root.updateColor = (r,g,b) ->
 Loads = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 Loads_model = scene.model.append()
 Loads_model.translate(-W/2,-H/2,-L/2)
-
-arrows_scale_factor = 1
 
 root.updateLoads = (id) ->
     i = String(id).substr(2,1)
@@ -191,7 +195,8 @@ root.updateLoads = (id) ->
                    .matrix([((norm**2)+c*(-(fy**2)-(fz**2)))/(norm**2), -fy/(norm), -fz/(norm),  0,
                             fy/(norm) , ((norm**2)-c*(fy**2))/(norm**2) , (-c*fy*fz)/(norm**2) , 0,
                             fz/(norm) , (-c*fy*fz)/(norm**2) , ((norm**2)-c*(fz**2))/(norm**2) , 0,
-                            0,0,0,1]).translate(n.x,n.y,n.z))
+                            0,0,0,1])
+                   .translate(n.x,n.y,n.z))
     Loads[i - 1] = load_group
     context.render()
 
@@ -203,9 +208,64 @@ root.removeLoads = ->
             Loads[count-1] = null
     context.render()
 
-clone = (obj) ->
-   return obj  if obj is null or typeof (obj) isnt "object"
-   temp = new obj.constructor()
-   for key of obj
-       temp[key] = clone(obj[key])
-   temp
+Boundaries = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+Boundaries_model = scene.model.append()
+Boundaries_model.translate(-W/2,-H/2,-L/2)
+bc_size = 0.1*(Math.min(W, H, L))
+
+root.updateBoundaries = (id) ->
+    i = String(id).substr(2,1)
+    x_b = document.getElementById("boundary_frame").contentWindow.document.getElementById("xb" + i).value
+    y_b = document.getElementById("boundary_frame").contentWindow.document.getElementById("yb" + i).value
+    z_b = document.getElementById("boundary_frame").contentWindow.document.getElementById("zb" + i).value
+    b_x = document.getElementById("boundary_frame").contentWindow.document.getElementById("Bx" + i).value #0 or 1
+    b_y = document.getElementById("boundary_frame").contentWindow.document.getElementById("By" + i).value
+    b_z = document.getElementById("boundary_frame").contentWindow.document.getElementById("Bz" + i).value
+
+    Boundaries_model.remove(Boundaries[i - 1])
+    Boundaries[i - 1] = null
+
+    if ("=" in x_b) | (">" in x_b) | ("<" in x_b)    #'Differencing between pure value and inequation
+        func_x = (x) -> eval("x".concat(x_b))
+    else
+        func_x = (x) -> x == parseInt(x_b)
+    if ("=" in y_b) | (">" in y_b) | ("<" in y_b)
+        func_y = (y) -> eval("y".concat(y_b))
+    else
+        func_y = (y) -> y == parseInt(y_b)
+    if ("=" in z_b) | (">" in z_b) | ("<" in z_b)
+        func_z = (z) -> eval("z".concat(z_b))
+    else
+        func_z = (z) -> z == parseInt(z_b)
+
+    boundaries_group = Boundaries_model.append()     #Group created for 1 BC made by inequations (many nodes)
+    func = (x,y,z) -> func_x(x) & func_y(y) & func_z(z)
+    for n in Nodes
+        if func(n.x,n.y,n.z)
+            if b_x == "1"
+                boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5)
+                                        .rotz(Math.PI/2).fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
+                boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5).rotx(Math.PI)
+                                        .rotz(Math.PI/2).fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
+            if b_y == "1"
+                boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5)
+                                        .fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
+                boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5).rotx(Math.PI)
+                                        .fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
+            if b_z == "1"
+                boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5)
+                                        .rotx(Math.PI/2).fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
+                boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5).rotx(Math.PI)
+                                        .rotx(Math.PI/2).fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
+
+    Boundaries[i - 1] = boundaries_group
+    context.render()
+
+
+root.removeBoundaries = ->
+    n_boundaries = document.getElementById("boundary_frame").contentWindow.document.body.children.length - 2
+    for count in [1..Boundaries.length]
+        if count > n_boundaries
+            Boundaries_model.remove(Boundaries[count-1])
+            Boundaries[count-1] = null
+    context.render()

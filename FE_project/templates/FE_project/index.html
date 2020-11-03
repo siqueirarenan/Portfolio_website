@@ -14,7 +14,7 @@
     <script type="text/coffeescript" src="Coffeescript.coffee"></script>
 </head>
 
-<body onload="onload()">
+<body onload="onload();updateShape()">
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
@@ -87,12 +87,12 @@
         <!--FE_Project-->
         <div class="w3-row-padding w3-content w3-mobile">
             <!-- Input controls -->
-            <form class="w3-col l4 m4 s12" id="control_inputs" style="width:305px">
+            <form class="w3-col l4 m4 s12" id="control_inputs" style="min-width:305px">
                 <!-- Materials -->
                 <div class="w3-bar w3-teal">
-                    <div class="w3-bar-item w3-padding w3-mobile">Material</div>
+                    <div class="w3-bar-item w3-padding w3-mobile" style="margin-right:16px">Material</div>
                     <div class="w3-bar-item w3-mobile w3-dropdown-hover
-                                w3-padding w3-button w3-right" style="width:50%">
+                                w3-padding w3-button" style="width:50%">
                         <a id="material">Steel</a>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
                             <a onclick="setSteel();updateColor(0.5, 0.9, 0.8)" class="w3-bar-item w3-button">Steel</a>
@@ -110,7 +110,7 @@
                 <div class="w3-bar w3-teal">
                     <div class="w3-bar-item w3-padding" style="margin-right:17px">Poisson's ratio</div>
                         <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                               type="number" id="Poisson" max="1" min="0" value="0.3">
+                               type="number" id="Poisson" max="1" min="0" step="0.01" value="0.3">
                 </div>
                 <!--Shape-->
                 <div class="w3-bar w3-brown">
@@ -129,7 +129,7 @@
                 <div class="w3-bar w3-teal">
                     <label class="w3-bar-item w3-padding" style="margin-right:29px">Element size</label>
                     <input onchange="updateShape()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                           type="number" id="eleSize" max="20" min="1" value="15">
+                           type="number" id="eleSize" max="20" min="1" value="10">
                 </div>
                 <!--Loads and boundaries-->
                 <div class="w3-bar w3-teal">
@@ -137,14 +137,16 @@
                     </iframe>
                 </div>
                 <div class="w3-bar w3-teal">
-                    <iframe src="boundaries.html" style="height:120px;width:100%;border:0px solid #ccc;">
+                    <iframe src="boundaries.html" style="height:120px;width:100%;border:0px solid #ccc;" id="boundary_frame">
                     </iframe>
                 </div>
 
+                <button class="w3-bar-item w3-button w3-mobile w3-padding w3-brown w3-block" onclick="">RUN</button>
+
             </form>
-            <div class="w3-col l6 m8 s12" style="width:500px">
+            <div class="w3-col l4 m4 s12">
                 <!--Vizualization window -->
-                <canvas width="500" height="500" id="seen-canvas"></canvas>
+                <svg width="500" height="500" id="seen-canvas"></svg>
             </div>
         </div>
     </div>
