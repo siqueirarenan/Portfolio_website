@@ -1,4 +1,4 @@
-import FE_solver
+from . import FE_solver
 import pickle
 from tkinter import Tk, Label, Entry, Button, W
 

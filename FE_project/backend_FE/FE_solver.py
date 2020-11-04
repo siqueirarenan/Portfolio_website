@@ -1,5 +1,5 @@
 import numpy as np
-import FE_classes
+from . import FE_classes
 from scipy import linalg as spln
 import pickle
 
@@ -113,7 +113,7 @@ def solver(job_name, mdb):
                     else:
                         print('History output {} not found'.format(v))
 
-    with open('Output_files\\' + job_name + '.odb', 'wb') as output:
+    with open('FE_project\\backend_FE\\Output_files\\' + job_name + '.odb', 'wb') as output:
         pickle.dump(odb, output, pickle.HIGHEST_PROTOCOL)
 
 
