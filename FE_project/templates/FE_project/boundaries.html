@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>boundaries</title>
+    {% load static %}
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="mainCSS.css">
-    <script src="mainJS.js"></script>
+    <link rel="stylesheet" href="{% static 'FE_project/mainCSS.css'%}">
+    <script src="{% static 'FE_project/mainJS.js'%}"></script>
+    <script src="{% static 'FE_project/seen.js'%}"></script>
+    <script type="text/coffeescript" src="{% static 'FE_project/Coffeescript.coffee'%}"></script>
 </head>
 <body class="w3-teal"  onchange="update_boundary_table()">
 <div class="w3-bar w3-teal w3-top">

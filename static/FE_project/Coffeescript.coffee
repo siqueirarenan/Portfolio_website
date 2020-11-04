@@ -269,3 +269,32 @@ root.removeBoundaries = ->
             Boundaries_model.remove(Boundaries[count-1])
             Boundaries[count-1] = null
     context.render()
+
+root.run_cs = ->
+    submit_obj =
+        'Emodul' : document.getElementById("Emodul").value
+        'Poisson' : document.getElementById("Poisson").value
+        'mbb_width' : document.getElementById("mbb_width").value
+        'mbb_height' : document.getElementById("mbb_height").value
+        'mbb_length' : document.getElementById("mbb_length").value
+        'eleSize' : document.getElementById("eleSize").value
+        'Forces' : []
+        'Boundaries' : []
+    for l in [1..document.getElementById("load_frame").contentWindow.document.body.children.length - 3]
+        submit_obj["Forces"].push =
+            x_f : document.getElementById("load_frame").contentWindow.document.getElementById("xf" + l).value
+            y_f : document.getElementById("load_frame").contentWindow.document.getElementById("yf" + l).value
+            z_f : document.getElementById("load_frame").contentWindow.document.getElementById("zf" + l).value
+            fx : document.getElementById("load_frame").contentWindow.document.getElementById("Fx" + l).value
+            fy : document.getElementById("load_frame").contentWindow.document.getElementById("Fy" + l).value
+            fz : document.getElementById("load_frame").contentWindow.document.getElementById("Fz" + l).value
+    for i in [1..document.getElementById("boundary_frame").contentWindow.document.body.children.length - 3]
+        submit_obj["Boundaries"].push =
+            x_b : document.getElementById("boundary_frame").contentWindow.document.getElementById("xb" + i).value
+            y_b : document.getElementById("boundary_frame").contentWindow.document.getElementById("yb" + i).value
+            z_b : document.getElementById("boundary_frame").contentWindow.document.getElementById("zb" + i).value
+            b_x : document.getElementById("boundary_frame").contentWindow.document.getElementById("Bx" + i).value #0 or 1
+            b_y : document.getElementById("boundary_frame").contentWindow.document.getElementById("By" + i).value
+            b_z : document.getElementById("boundary_frame").contentWindow.document.getElementById("Bz" + i).value
+
+    jQuery.post('run',submit_obj, (obj_out) -> alert(obj_out.content.v_test))
