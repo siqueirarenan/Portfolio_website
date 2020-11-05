@@ -114,10 +114,16 @@ def run_FE_project(request):
         for c in u:
             max_u = max(max_u,abs(c))
 
+
+
     return {'MaxDisplacement': max_u,
             'Displacements': odb.steps['STEP-1'].frames[-1].fieldOutputs['U'].values.original_data,
-            'MisesMax': odb.steps['STEP-1'].frames[-1].fieldOutputs['MISESMAX'].values.original_data,
+            'VMises': odb.steps['STEP-1'].frames[-1].fieldOutputs['MISESMAX'].values.original_data,
+            'MaxVM': max(odb.steps['STEP-1'].frames[-1].fieldOutputs['MISESMAX'].values.original_data),
+            'MinVM': min(odb.steps['STEP-1'].frames[-1].fieldOutputs['MISESMAX'].values.original_data),
             'DeformationEnergyField': odb.steps['STEP-1'].frames[-1].fieldOutputs['ESEDEN'].values.original_data,
+            'MaxDE': max(odb.steps['STEP-1'].frames[-1].fieldOutputs['ESEDEN'].values.original_data),
+            'MinDE': min(odb.steps['STEP-1'].frames[-1].fieldOutputs['ESEDEN'].values.original_data),
             'TotalEnergy': odb.steps['STEP-1'].historyRegions['Assembly ASSEMBLY'].historyOutputs['ALLWK'].data[-1][1],
             }
 

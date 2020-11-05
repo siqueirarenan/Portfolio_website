@@ -93,10 +93,10 @@
     </div>-->
 
 <!-- App -->
-    <div class="w3-container w3-padding-32" id="app" name="app">
+    <div class="w3-container w3-padding-32" id="app">
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">The App</h3>
         <!--FE_Project-->
-        <div class="w3-row-padding w3-content w3-mobile">
+        <div class="w3-row-padding w3-content w3-mobile" name="app">
             <!-- Input controls -->
             <form class="w3-col l4 m4 s12" id="control_inputs" style="min-width:305px">
                 <!-- Materials -->
@@ -106,21 +106,21 @@
                                 w3-padding w3-button" style="width:50%">
                         <a id="material">Steel</a>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
-                            <a onclick="setSteel();updateColor(0.5, 0.9, 0.8)" class="w3-bar-item w3-button">Steel</a>
-                            <a onclick="setAluminum();updateColor(1, 1, 0.9)" class="w3-bar-item w3-button">Aluminum</a>
-                            <a onclick="setSilver();updateColor(1, 1, 1)" class="w3-bar-item w3-button">Silver</a>
-                            <a onclick="setUserMat();updateColor(0.1, 0.5, 0.5)" class="w3-bar-item w3-button">User-defined</a>
+                            <a onclick="setSteel();updateColor(160, 200, 250)" class="w3-bar-item w3-button">Steel</a>
+                            <a onclick="setAluminum();updateColor(255, 180, 180)" class="w3-bar-item w3-button">Aluminum</a>
+                            <a onclick="setSilver();updateColor(200, 200, 200)" class="w3-bar-item w3-button">Silver</a>
+                            <a onclick="setUserMat();updateColor(250, 150, 100)" class="w3-bar-item w3-button">User-defined</a>
                         </div>
                     </div>
                 </div>
                 <div class="w3-bar w3-teal">
                     <label class="w3-bar-item w3-padding">Young's Modulus</label>
-                        <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                        <input onchange="setUserMat2();updateColor(250, 150, 100)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
                                type="number" id="Emodul" max="999" min="0" value="210" name="i_E">
                 </div>
                 <div class="w3-bar w3-teal">
                     <div class="w3-bar-item w3-padding" style="margin-right:17px">Poisson's ratio</div>
-                        <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
+                        <input onchange="setUserMat2();updateColor(0.1, 0.5, 0.5)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
                                type="number" id="Poisson" max="1" min="0" step="0.01" value="0.3" name="i_p">
                 </div>
                 <!--Shape-->
@@ -158,7 +158,14 @@
             </form>
             <div class="w3-col l4 m4 s12">
                 <!--Vizualization window -->
-                <svg width="500" height="500" id="seen-canvas"></svg>
+                <svg width="590" height="473" id="seen-canvas"></svg>
+
+                <div class="w3-bar w3-hide" id="outputBar">
+                    <button class="w3-bar-item w3-button w3-round w3-border" style="margin-right:8px;width:140px"
+                            onclick="updateDisplacement()" id="displacement">Displacement</button>
+                    <button class="w3-bar-item w3-button w3-round w3-border" style="margin-right:8px;width:140px"
+                            onclick="updateFieldOutput()" id="fieldOutput">Von Mises Stress</button>
+                </div>
             </div>
         </div>
     </div>

@@ -1,5 +1,8 @@
+#!!!No class for materials. Must be implemented in future versions
+
 width  = parseInt(document.getElementById("seen-canvas").width.baseVal.value)
 height = parseInt(document.getElementById("seen-canvas").height.baseVal.value)
+scale_coef = 4.5
 
 # Create empty scene and render context
 scene = new seen.Scene
@@ -62,16 +65,18 @@ for e in Elements_connectivity
     count++
 
 #Colors
+CurrentColorR = 160
+CurrentColorG = 200
+CurrentColorB = 250
 for shape in submodel.children
     for surf in shape.surfaces
-       surf.fillMaterial.color = seen.Colors.hsl(0.5, 0.9, 0.8)
+       surf.fillMaterial.color = seen.Colors.rgb(CurrentColorR, CurrentColorG, CurrentColorB)
        surf.fillMaterial.specularColor = surf.fillMaterial.color
        surf.fillMaterial.specularExponent = 60
        surf.fillMaterial.metallic = true
        surf.dirty = true
 
 submodel.translate(-W/2,-H/2,-L/2)
-scale_coef = 4
 scene.model.scale(scale_coef)
 scene.model.rotx(0.4)
 scene.model.roty(-0.5)
@@ -143,10 +148,13 @@ root.updateShape = ->
     context.render()
 
 root.updateColor = (r,g,b) ->
+    CurrentColorR = r
+    CurrentColorG = g
+    CurrentColorB = b
     #Colors
     for shape in submodel.children
         for surf in shape.surfaces
-           surf.fillMaterial.color = seen.Colors.hsl(r, g, b)
+           surf.fillMaterial.color = seen.Colors.rgb(CurrentColorR, CurrentColorG, CurrentColorB)
            surf.fillMaterial.specularColor = surf.fillMaterial.color
            surf.dirty = true
     context.render()
@@ -270,6 +278,16 @@ root.removeBoundaries = ->
             Boundaries[count-1] = null
     context.render()
 
+MaxDisplacement = null
+Displacements = null
+VMMises = null
+DeformationEnergyField = null
+VMises = null
+MaxVM = null
+MinVM = null
+MaxDE = null
+MinDE = null
+
 root.run_cs = ->
     submit_obj =
         'Emodul' : document.getElementById("Emodul").value
@@ -301,28 +319,87 @@ root.run_cs = ->
          boundaries["Boundary" + i] = JSON.stringify(boundary)
     submit_obj["Boundaries"] = JSON.stringify(boundaries)
     jQuery.post('run',submit_obj, (obj_out) ->
+        MaxDisplacement = obj_out.content.MaxDisplacement
+        Displacements = obj_out.content.Displacements
 
-        #Output results
-        #MisesMax
-        #DeformationEnergyField
-        #TotalEnergy
+        VMises = obj_out.content.VMises
+        MaxVM = obj_out.content.MaxVM
+        MinVM = obj_out.content.MinVM
+        DeformationEnergyField = obj_out.content.DeformationEnergyField
+        MaxDE = obj_out.content.MaxDE
+        MinDE = obj_out.content.MinDE
 
-        scale_factor = 0.15*Math.max(W, H, L)/obj_out.content.MaxDisplacement
+        updateDisplacement()
+        updateFieldOutput()
 
-        #Displacements
-        i = 0
-        for n in Nodes
-            n.x = n.x + obj_out.content.Displacements[i][0]*scale_factor
-            n.y = n.y + obj_out.content.Displacements[i][1]*scale_factor
-            n.z = n.z + obj_out.content.Displacements[i][2]*scale_factor
-            i++
+        $("#outputBar").removeClass("w3-hide")
+        )
 
-        scene.model.remove(Loads_model)
-        scene.model.remove(Boundaries_model)
+    #MaxStress
+    #Max displacement
 
-        for shape in submodel.children
-            for surf in shape.surfaces
-               surf.dirty = true
+DisplacementON = 1
+root.updateDisplacement = ->
+    if DisplacementON == 1
+        sign = 1
+        DisplacementON = 0
+        #$("#displacement").color("Displacement ON")
+    else
+        sign = -1
+        DisplacementON = 1
+        #$("#displacement").color("Displacement OFF")
+    scale_factor = 0.15*Math.max(W, H, L)/MaxDisplacement
+    #Displacements
+    i = 0
+    for n in Nodes
+        n.x = n.x + sign*Displacements[i][0]*scale_factor
+        n.y = n.y + sign*Displacements[i][1]*scale_factor
+        n.z = n.z + sign*Displacements[i][2]*scale_factor
+        i++
+    scene.model.remove(Loads_model)
+    scene.model.remove(Boundaries_model)
+    for shape in submodel.children
+        for surf in shape.surfaces
+           surf.dirty = true
+    context.render()
 
-        context.render()
-    )
+FieldOutputON = 1
+root.updateFieldOutput = ->
+    if FieldOutputON == 1 #Von Mises
+        Field = VMises
+        MaxField = MaxVM
+        MinField = MinVM
+        $("#fieldOutput").text("Von Mises Stress")
+        FieldOutputON = 2
+    else if FieldOutputON == 2 #Energy
+        Field = DeformationEnergyField
+        MaxField = MaxDE
+        MinField = MinDE
+        $("#fieldOutput").text("Deformation Energy")
+        FieldOutputON = 0
+    else         #No field
+        $("#fieldOutput").text("No field output")
+        FieldOutputON = 1
+    #Colors
+    for shape, value in submodel.children
+        if FieldOutputON == 1
+            R = CurrentColorR
+            G = CurrentColorG
+            B = CurrentColorB
+            A = 255
+        else
+            stress_ratio = (Field[value] - MinField)/(MaxField - MinField)
+            R = stress_ratio * 255
+            G = 0
+            B = (1 - stress_ratio) * 255
+            A = 150
+        for surf in shape.surfaces
+            surf.fillMaterial = new seen.Material()
+            surf.fillMaterial.color = seen.Colors.rgb(R, G, B, A)
+            surf.fillMaterial.specularColor = surf.fillMaterial.color
+            surf.dirty = true
+    context.render()
+
+
+
+

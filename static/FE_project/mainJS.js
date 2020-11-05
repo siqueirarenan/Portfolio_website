@@ -105,26 +105,6 @@ function update_boundary_table(){
     }
 }
 
-//function run_js(){
-//    $("#Emodul")
-//    $("#Poisson")
-//    $("#mbb_width")
-//    $("#mbb_height")
-//    $("#mbb_length")
-//    $("#eleSize")
-//    for
-//    $("#load_frame").contents().find()
-//    $("#boundary_frame").contents().find()
-//
-//
-//    jQuery.post('run',{'w':'d'}, function(obj_out){
-//        //onSuccess
-//        alert(obj_out.content.v_test);
-//    })
-//}
-
-
-
 
 
 
