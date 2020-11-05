@@ -67,7 +67,7 @@ def run_FE_project(request):
         else:
             func_z = lambda z: z == float(F['z_f'])
 
-        regL = part.NodeRegionFromFunction(lambda x, y, z: func_x and func_y and func_z)
+        regL = part.NodeRegionFromFunction(lambda x, y, z: func_x(x) and func_y(y) and func_z(z))
         mdl.ConcentratedForce('Load-' + str(count), 'Step-1', region=regL, cf1=float(F['fx']), cf2=float(F['fy']), cf3=float(F['fz']))
         count += 1
 
@@ -87,7 +87,7 @@ def run_FE_project(request):
             func_z = lambda z: eval("z" + B['z_b'], {"z": z})
         else:
             func_z = lambda z: z == float(B['z_b'])
-        regBC = part.NodeRegionFromFunction(lambda x, y, z: func_x and func_y and func_z)
+        regBC = part.NodeRegionFromFunction(lambda x, y, z: func_x(x) and func_y(y) and func_z(z))
         mdl.DisplacementBC('BC-1', 'Step-1', region=regBC, u1=0 if B['b_x']=="1" else None, u2=0 if B['b_y']=="1" else None, u3=0 if B['b_z']=="1" else None)
         count += 1
 
@@ -109,5 +109,15 @@ def run_FE_project(request):
     #
     # # print(time.time() - t_i)
 
-    return {'odb': 4}
+    max_u = 0
+    for u in odb.steps['STEP-1'].frames[-1].fieldOutputs['U'].values.original_data:
+        for c in u:
+            max_u = max(max_u,abs(c))
+
+    return {'MaxDisplacement': max_u,
+            'Displacements': odb.steps['STEP-1'].frames[-1].fieldOutputs['U'].values.original_data,
+            'MisesMax': odb.steps['STEP-1'].frames[-1].fieldOutputs['MISESMAX'].values.original_data,
+            'DeformationEnergyField': odb.steps['STEP-1'].frames[-1].fieldOutputs['ESEDEN'].values.original_data,
+            'TotalEnergy': odb.steps['STEP-1'].historyRegions['Assembly ASSEMBLY'].historyOutputs['ALLWK'].data[-1][1],
+            }
 

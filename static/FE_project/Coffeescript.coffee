@@ -300,4 +300,29 @@ root.run_cs = ->
             b_z : document.getElementById("boundary_frame").contentWindow.document.getElementById("Bz" + i).value
          boundaries["Boundary" + i] = JSON.stringify(boundary)
     submit_obj["Boundaries"] = JSON.stringify(boundaries)
-    jQuery.post('run',submit_obj, (odb) -> null)
+    jQuery.post('run',submit_obj, (obj_out) ->
+
+        #Output results
+        #MisesMax
+        #DeformationEnergyField
+        #TotalEnergy
+
+        scale_factor = 0.15*Math.max(W, H, L)/obj_out.content.MaxDisplacement
+
+        #Displacements
+        i = 0
+        for n in Nodes
+            n.x = n.x + obj_out.content.Displacements[i][0]*scale_factor
+            n.y = n.y + obj_out.content.Displacements[i][1]*scale_factor
+            n.z = n.z + obj_out.content.Displacements[i][2]*scale_factor
+            i++
+
+        scene.model.remove(Loads_model)
+        scene.model.remove(Boundaries_model)
+
+        for shape in submodel.children
+            for surf in shape.surfaces
+               surf.dirty = true
+
+        context.render()
+    )
