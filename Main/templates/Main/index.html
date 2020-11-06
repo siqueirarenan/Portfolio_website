@@ -16,7 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="icon" type="image/png" href="static/favicon.png"/>
+    <link rel="icon" type="image/png" href="{% static 'favicon.png' %}"/>
 </head>
 <body>
 
@@ -35,7 +35,7 @@
 
 <!-- Header -->
 <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;" id="home">
-  <img class="w3-image" src= "static/pictures/top_pic.JPG" alt="Architecture" width="1500" height="500">
+  <img class="w3-image" src= "{% static 'pictures/top_pic.JPG' %}" alt="Architecture" width="1500" height="500">
   <div class="w3-display-left w3-margin-top w3-margin-left w3-left">
     <h1 class="w3-xxlarge w3-text-white w3-margin-left w3-margin-bottom">
       <span class="w3-hide-medium w3-hide-large center w3-black w3-opacity-min"><b>Renan Siqueira</b> Ph.D.</span>
@@ -53,31 +53,57 @@
 
   <!-- Project Section -->
   <div class="w3-container w3-padding-32" id="projects">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Projects</h3>
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Open-source Projects</h3>
   </div>
 
   <div class="w3-row-padding">
     <div class="w3-col l4 m6 w3-margin-bottom">
     <a href="FE_project">
-      <div class="w3-hover-shadow w3-light-grey">
+      <div class="w3-hover-shadow w3-card-4 w3-light-grey">
 <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
-        <div class="w3-display-container w3-text-white" height="100px">
-          <img class="w3-hover-opacity" src="static/pictures/FEproject.png" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
-          <span class="w3-xlarge w3-display-topright w3-padding w3-black w3-opacity-min">Python 3</span>
+        <div class="w3-display-container w3-hover-opacity w3-text-white" height="100px">
+          <img class="" src="{% static 'pictures/FEproject.png' %}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+          <span class="w3-display-topright w3-padding" style="text-align:right">
+              <img src="{% static 'pictures/coffeescript.png' %}" style="width:17%;">
+          </span>
+            <span class="w3-display-topleft w3-padding" style="text-align:left">
+              <img src="{% static 'pictures/python-logo.png' %}" style="width:17%">
+          </span>
+            <span class="w3-tag w3-round w3-indigo w3-padding w3-margin-bottom w3-display-bottomright">Try yourself!</span>
         </div>
         <footer class="w3-container w3-black w3-center">
-          <h5>Finite Element Library</h5>
+          <h5>Finite Element Analysis Web App</h5>
         </footer>
       </div>
     </a>
     </div>
     <div class="w3-col l4 m6 w3-margin-bottom">
+      <!--<a href="https://github.com/siqueirarenan/Sight_Read_Master">-->
+      <a href="https://sight-reading-trainer-webapp.herokuapp.com/">
+          <div class="w3-hover-shadow w3-card-4 w3-light-grey">
+              <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
+              <div class="w3-display-container w3-text-white">
+                  <img class="w3-hover-opacity" src="{% static 'pictures/sightreading.PNG'  %}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+                  <span class="w3-display-bottomleft w3-padding" style="text-align:left">
+                      <img src="{% static 'pictures/java.png' %}" style="width:25%">
+                </span>
+                  <span class="w3-tag w3-round w3-padding w3-indigo w3-margin-bottom w3-display-bottomright">Try yourself!</span>
+              </div>
+              <footer class="w3-container w3-black w3-center">
+                  <h5>Sight Reading Trainner Web App</h5>
+              </footer>
+          </div>
+      </a>
+    </div>
+    <div class="w3-col l4 m6 w3-margin-bottom">
         <a href="https://github.com/siqueirarenan/IZEO_Topology_optimization_Abaqus_script">
-      <div class="w3-hover-shadow w3-light-grey">
+      <div class="w3-hover-shadow w3-card-4">
         <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
-        <div class="w3-display-container w3-text-black">
-          <img class="w3-hover-opacity" src="static/pictures/IZEOabaqus.png" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
-          <span class="w3-xlarge w3-display-topright w3-padding w3-white w3-opacity-min">Python 3</span>
+        <div class="w3-display-container w3-text-white">
+          <img class="w3-hover-opacity" src="{% static 'pictures/IZEOabaqus2.png' %}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+            <span class="w3-display-topleft w3-padding" style="text-align:left">
+              <img src="{% static 'pictures/python-logo.png' %}" style="width:17%">
+          </span>
         </div>
         <footer class="w3-container w3-black w3-center">
           <h5>Topology Optimization Plug-in</h5>
@@ -86,27 +112,15 @@
         </a>
     </div>
     <div class="w3-col l4 m6 w3-margin-bottom">
-        <!--<a href="https://github.com/siqueirarenan/Sight_Read_Master">-->
-            <a href="https://sight-reading-trainer-webapp.herokuapp.com/">
-      <div class="w3-hover-shadow w3-light-grey">
-        <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
-        <div class="w3-display-container w3-text-black">
-          <img class="w3-hover-opacity" src="static/pictures/sightreading.PNG" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
-          <span class="w3-xlarge w3-display-topright w3-padding w3-white w3-opacity-min">Java</span>
-        </div>
-        <footer class="w3-container w3-black w3-center">
-          <h5>Sight Reading Trainner Web App</h5>
-        </footer>
-      </div>
-        </a>
-    </div>
-    <div class="w3-col l4 m6 w3-margin-bottom">
         <a href="https://github.com/siqueirarenan/Duolingo_Pic">
-      <div class="w3-hover-shadow w3-light-grey">
+      <div class="w3-hover-shadow w3-card-4">
         <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
-        <div class="w3-display-container w3-text-black">
-          <img class="w3-hover-opacity" src="static/pictures/Duolingo.png" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
-          <span class="w3-xlarge w3-display-topright w3-padding w3-white w3-opacity-min" style="text-align:right">Javascript<br>HTML5</span>
+        <div class="w3-display-container w3-text-white">
+          <img class="w3-hover-opacity" src="{% static 'pictures/Duolingo.png'%}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+            <span class="w3-display-bottomleft w3-padding" style="text-align:left">
+              <img src="{% static 'pictures/javascript.png' %}" style="width:15%;margin-right:16px">
+              <img src="{% static 'pictures/html.png' %}" style="width:13%">
+          </span>
         </div>
         <footer class="w3-container w3-black w3-center">
           <h5>DuoLingoPic Chrome Extension</h5>
@@ -116,35 +130,37 @@
     </div>
     <div class="w3-col l4 m6 w3-margin-bottom">
         <a href="https://github.com/siqueirarenan/Coronavirus-data-analysis">
-      <div class="w3-hover-shadow w3-light-grey">
+      <div class="w3-hover-shadow w3-card-4">
         <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
-        <div class="w3-display-container w3-text-black">
-          <img class="w3-hover-opacity" src="static/pictures/corona.PNG" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
-          <span class="w3-xlarge w3-display-topright w3-padding w3-white w3-opacity-min" style="text-align:right">Python<br>Web scrapping</span>
+        <div class="w3-display-container w3-text-white">
+          <img class="w3-hover-opacity" src="{% static 'pictures/corona.PNG'%}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+            <span class="w3-display-topleft w3-padding" style="text-align:left">
+              <img src="{% static 'pictures/python-logo.png' %}" style="width:18%">
+          </span>
         </div>
         <footer class="w3-container w3-black w3-center">
-          <h5>Corona Virus Data Analysis</h5>
+          <h5>COVID-19 Data Analysis</h5>
         </footer>
       </div>
         </a>
     </div>
-      <div class="w3-col l4 m6 w3-margin-bottom">
-              <div class="w3-hover-shadow w3-light-grey">
-                  <!--        <header class="w3-container w3-blue"><h1>Header</h1></header>-->
-                  <div class="w3-display-container w3-text-white">
-                      <img class="w3-hover-opacity" src="static/pictures/Arduino.jpg" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
-                      <span class="w3-xlarge w3-display-topright w3-padding w3-black w3-opacity-min" style="text-align:right">Python 3<br>C</span>
-                  </div>
-                  <footer class="w3-container w3-black w3-center">
-                      <h5>Tea Maker UI and Control</h5>
-                  </footer>
+<!--    <div class="w3-col l4 m6 w3-margin-bottom">
+          <div class="w3-hover-shadow w3-light-grey">
+              &lt;!&ndash;        <header class="w3-container w3-blue"><h1>Header</h1></header>&ndash;&gt;
+              <div class="w3-display-container w3-text-white">
+                  <img class="w3-hover-opacity" src="{% static 'pictures/Arduino.jpg'%}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+                  <span class="w3-tag w3-round w3-xlarge w3-display-topright w3-padding w3-indigo w3-opacity-min" style="text-align:right">Python<br>C</span>
               </div>
-      </div>
+              <footer class="w3-container w3-black w3-center">
+                  <h5>Tea Maker UI and Control</h5>
+              </footer>
+          </div>
+    </div>-->
 <!--    <div class="w3-col l4 m6 w3-margin-bottom">
       <div class="w3-hover-shadow w3-light-grey">
         &lt;!&ndash;        <header class="w3-container w3-blue"><h1>Header</h1></header>&ndash;&gt;
         <div class="w3-display-container w3-text-white">
-          <img class="w3-hover-opacity" src="static/pictures/Samba.png" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
+          <img class="w3-hover-opacity" src="{% static 'pictures/Samba.png' %}' %}" alt="IZEO" style="object-fit: cover;" height="200" width="100%">
           <span class="w3-xlarge w3-display-topright w3-padding w3-black w3-opacity-min">LabView</span>
         </div>
         <footer class="w3-container w3-black w3-center">
@@ -161,31 +177,29 @@
     <div class="w3-container" style="justify-content: center" >
       <div class="w3-col l1  "><p></p></div>
       <div class="w3-col l10 m12 s12">
-        <img class="w3-col l3 m4 s12 w3-padding" src="static/pictures/MyPic.jpg" alt="John" style="...">
+        <img class="w3-col l3 m4 s12 w3-padding" src="{% static 'pictures/MyPic.jpg'%}" alt="John" style="max-height:300px;width:auto">
 
         <p>Renan Siqueira is a Ph.D. in product development and programmer enthusiast. During his career he
           worked in Brazil, USA, Germany and Australia, while actuating in diverse fields, such as mechatronics, oil industry,
             optimization and development research. In spite of that, the link between all these experiences lies in
-            software development, a passion that comes to be a solution for many different subjects.
+            software development, a passion that comes to be a solution for all kinds of problems.
         </p>
-        <h3 class="w3-padding-16">
-          <i>"I am a learner and a problem solver always looking for the next challenge!"</i>
+        <h3 class="w3-padding w3-serif" style="margin:auto">
+          <i>"I love to learn and solve new challenges!"</i>
         </h3>
-      </div>
-      <div class="w3-col l1  "><p></p></div>
-    </div>
 
-
-      <div class="w3-container w3-right" >
+      <span class="" >
           <a href="https://www.researchgate.net/profile/Renan_Siqueira5" target="_blank">
-              <img src="static/pictures/researchG.png" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;" ></a>
+              <img src="{% static 'pictures/researchG.png' %}" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;" ></a>
           <a href="https://www.linkedin.com/in/siqueira-renan/" target="_blank">
-            <img src="static/pictures/Linkedin-Icon.png" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
+            <img src="{% static 'pictures/Linkedin-Icon.png' %}" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
           <a href="https://github.com/siqueirarenan" target="_blank">
-            <img src="static/pictures/git.png" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
+            <img src="{% static 'pictures/git.png' %}" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
 <!--          <a href="https://www.scrum.org/certificates/582761" target="_blank">-->
-<!--            <img src="static/pictures/psmi.png" style="padding: 10px; float: right;width:5%;min-width:85px;height:auto;"></a>-->
+<!--            <img src="{% static 'pictures/psmi.png' %}" style="padding: 10px; float: right;width:5%;min-width:85px;height:auto;"></a>-->
+      </span>
       </div>
+    </div>
     </div>
 
   <!-- Contact Section -->
@@ -201,9 +215,7 @@
           <input class="w3-input w3-section w3-border" type="text" placeholder="Subject" required name="Subject" value="{{ v_subject }}">
           <input class="w3-input w3-section w3-border" type="text" placeholder="Comment" required name="Comment" value="{{ v_comment }}">
           {% if msg_sent_bool == "0" %}
-          <button class="w3-button w3-black w3-section" type="submit">
-            <i class="fa fa-paper-plane"></i> SEND MESSAGE
-          </button>
+          <button class="w3-button w3-black w3-section" type="submit">SEND MESSAGE</button>
           {% endif %}
           {% if msg_sent_bool == "1" %}
             <div class="w3-text-grey"> <p> SENT </p> </div>
@@ -225,7 +237,7 @@
 
 <!-- Image of location/map -->
 <div  style="width:100%">
-  <img src="static/pictures/bottom_pic.JPG" style="object-fit: cover;width:100%;height=50%;" >
+  <img src="{% static 'pictures/bottom_pic.JPG'%}" style="object-fit: cover;width:100%;height=50%;" >
 </div>
 
 <!-- Footer -->

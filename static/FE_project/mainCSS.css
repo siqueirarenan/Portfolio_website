@@ -40,3 +40,6 @@ input.short_field{
     padding-right: 1px !important;
     padding-left: 1px !important;
 }
+.extramargin{
+    margin-right:5px !important;
+}

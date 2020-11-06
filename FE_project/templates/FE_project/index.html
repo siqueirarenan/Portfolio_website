@@ -3,22 +3,33 @@
 <html>
 <head>
     <title>Renan Siqueira - Portifolio</title>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7QKVD00XR3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-7QKVD00XR3');
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta charset="UTF-8">
-    <script src="mainJS.js"></script>
+    {% load static %}
+    <script src="{% static 'FE_project/mainJS.js'%}"></script>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="mainCSS.css">
-    <link rel="icon" type="image/png" href="favicon.png"/>
-    <script src="seen.js"></script>
+    <link rel="stylesheet" href="{% static 'FE_project/mainCSS.css'%}">
+    <link rel="icon" type="image/png" href="{% static 'favicon.png'%}"/>
+    <script src="{% static 'FE_project/seen.js'%}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
-    <script type="text/coffeescript" src="Coffeescript.coffee"></script>
+    <script type="text/coffeescript" src="{% static 'FE_project/Coffeescript.coffee'%}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body onload="onload()">
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
     <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-        <a href="#home" class="w3-bar-item w3-button">Renan Siqueira <b>Portifolio</b></a>
+        <a href="../#home" class="w3-bar-item w3-button">Renan Siqueira <b>Portifolio</b></a>
         <!-- Float links to the right. Hide them on small screens -->
         <div class="w3-right w3-hide-small">
             <a href="https://renansiqueira.herokuapp.com/#projects" class="w3-bar-item w3-button">Projects</a>
@@ -32,13 +43,13 @@
 <header class="w3-display-container w3-wide w3-black" style="max-width:1564px;height:300px" id="home">
     <div class="w3-display-left">
         <h1 class="w3-xxlarge w3-text-white w3-margin-left w3-margin-top w3-margin-bottom w3-padding">
-            <span><b>FEA and Topology Optimization</b></span><br>
+            <span><b>Finite Element Analysis</b></span><br>
             <span class="w3-hide-small">Web App</span>
         </h1>
     </div>
     <div class="w3-display-bottomright w3-padding w3-text-white w3-padding-large w3-margin-bottom w3-hide-small" style="min-width:40%">
         <a href="#app"><button class="w3-button w3-left w3-ripple w3-indigo w3-medium w3-wide
-        w3-padding-large w3-purple w3-block  w3-round-large">
+        w3-padding-large w3-indigo w3-block  w3-round-large">
             <b>Try yourself!</b>
         </button></a>
     </div>
@@ -48,17 +59,20 @@
 <div class="w3-padding" style="max-width:1564px">
     <div class="w3-container w3-padding-16 ">
         <p>
-        <br>The <b>Sight Reading Trainer</b> web application is a personal project for open-source music education. The purpose of the application is to
-        generate random notes on a music sheet while the user tries to play them on a connected MIDI device, measuring its performance ratio.
-        The notes generation is fully configurable, allowing the user to control the beats-per-second, key, signature, notes allowed, range and figures.
+        <br>The <b>Finite Element Analysis</b> web app is a personal project to develop an open-source unique application for mechanical static analysis,
+            which is currently not existent in the market. The application allows the user to configure the geometry, parameters and load conditions on the
+            client-side, while solving the differential equations on the server-side. <!--It is light-weight, easy-to-use and-->
         </p>
-        <div class="w3-container w3-right" >
-            <a href="https://github.com/siqueirarenan/Sight_Reading_Trainer" target="_blank">
-                <img src="git.png" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
+        <div class="w3-display-container">
+            <img src="{% static 'pictures/FEPframework.jpg' %}" width="500px" height="300px" style="display: block;margin-left: auto;margin-right: auto;">
+            <span class=" w3-display-topright" >
+                <a href="https://github.com/siqueirarenan/FE_Project" target="_blank">
+                    <img src="{% static 'pictures/git.png' %}" style="padding: 10px; float: right;width:6%;min-width:60px;height:auto;"></a>
+            </span>
         </div>
     </div>
 
-    <div class="w3-container w3-padding-16" >
+<!--    <div class="w3-container w3-padding-16" >
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Development</h3>
         <p>
         This is a Java application and was developed using the technologies bellow. Fore more detail about the
@@ -79,72 +93,94 @@
                     <img class="w3-image " src="docker.png" style="width:120px;padding-left:8px;padding-right:8px"></div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 <!-- App -->
-    <div class="w3-container w3-padding-32" id="app">
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">The App</h3>
+    <div class="w3-container w3-padding-32">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16" id="app">The App</h3>
         <!--FE_Project-->
-        <div class="w3-row-padding w3-content w3-mobile">
+        <div class="w3-row-padding w3-content w3-mobile" >
             <!-- Input controls -->
-            <form class="w3-col l4 m4 s12" id="control_inputs" style="width:305px">
+            <form class="w3-col l4 m4 s12" id="control_inputs" style="min-width:305px">
                 <!-- Materials -->
-                <div class="w3-bar w3-teal">
-                    <div class="w3-bar-item w3-padding w3-mobile">Material</div>
+                <div class="w3-bar">
+                    <div class="w3-bar-item w3-padding w3-mobile" style="margin-right:16px">Material</div>
                     <div class="w3-bar-item w3-mobile w3-dropdown-hover
-                                w3-padding w3-button w3-right" style="width:50%">
+                                w3-padding w3-button" style="width:50%">
                         <a id="material">Steel</a>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
-                            <a onclick="setSteel();updateColor(0.5, 0.9, 0.8)" class="w3-bar-item w3-button">Steel</a>
-                            <a onclick="setAluminum();updateColor(1, 1, 0.9)" class="w3-bar-item w3-button">Aluminum</a>
-                            <a onclick="setSilver();updateColor(1, 1, 1)" class="w3-bar-item w3-button">Silver</a>
-                            <a onclick="setUserMat();updateColor(0.1, 0.5, 0.5)" class="w3-bar-item w3-button">User-defined</a>
+                            <a onclick="setSteel();updateColor(160, 200, 250);updateShape()" class="w3-bar-item w3-button">Steel</a>
+                            <a onclick="setAluminum();updateColor(255, 180, 180);updateShape()" class="w3-bar-item w3-button">Aluminum</a>
+                            <a onclick="setSilver();updateColor(200, 200, 200);updateShape()" class="w3-bar-item w3-button">Silver</a>
+                            <a onclick="setUserMat();updateColor(250, 150, 100);updateShape()" class="w3-bar-item w3-button">User-defined</a>
                         </div>
                     </div>
                 </div>
-                <div class="w3-bar w3-teal">
+                <div class="w3-bar ">
                     <label class="w3-bar-item w3-padding">Young's Modulus</label>
-                        <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                               type="number" id="Emodul" max="999" min="0" value="210">
+                        <input onchange="setUserMat2();updateColor(250, 150, 100);updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round long_field"
+                               type="number" id="Emodul" max="999" min="0" value="210" name="i_E">
                 </div>
-                <div class="w3-bar w3-teal">
+                <div class="w3-bar ">
                     <div class="w3-bar-item w3-padding" style="margin-right:17px">Poisson's ratio</div>
-                        <input onchange="setUserMat2()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                               type="number" id="Poisson" max="1" min="0" value="0.3">
+                        <input onchange="setUserMat2();updateColor(250, 150, 100);updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round long_field"
+                               type="number" id="Poisson" max="1" min="0" step="0.01" value="0.3" name="i_p">
                 </div>
                 <!--Shape-->
-                <div class="w3-bar w3-brown">
+                <div class="w3-bar w3-light-grey">
                     <div class="w3-bar-item w3-padding" style="margin-right:25px">Shape</div>
                     <div class="w3-bar-item w3-padding" style="margin-right:19px">MBB beam</div>
                 </div>
-                <div class="w3-bar w3-brown">
+                <div class="w3-bar w3-light-grey">
                     <div class="w3-bar-item w3-padding">Dimensions</div>
-                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
-                           type="number" id="mbb_width" max="99" min="0" placeholder="W" value="40">
-                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
-                           type="number" id="mbb_height" max="99" min="0" placeholder="H" value="30">
-                    <input onchange="updateShape()" class="w3-input w3-brown w3-bar-item w3-hover-white w3-border w3-round short_field"
-                           type="number" id="mbb_length" max="99" min="0" placeholder="L" value="80">
+                    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_width" max="99" min="0" placeholder="W" value="40" name="i_w">
+                    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_height" max="99" min="0" placeholder="H" value="30" name="i_h">
+                    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
+                           type="number" id="mbb_length" max="99" min="0" placeholder="L" value="80" name="i_l">
                 </div>
-                <div class="w3-bar w3-teal">
-                    <label class="w3-bar-item w3-padding" style="margin-right:29px">Element size</label>
-                    <input onchange="updateShape()" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round long_field"
-                           type="number" id="eleSize" max="20" min="1" value="15">
+                <div class="w3-bar w3-light-grey">
+                    <label class="w3-bar-item w3-padding w3-light-grey" style="margin-right:29px">Element size</label>
+                    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round long_field"
+                           type="number" id="eleSize" max="20" min="1" value="5" name="i_el">
                 </div>
                 <!--Loads and boundaries-->
-                <div class="w3-bar w3-teal">
-                    <iframe src="loads.html" style="height:120px;width:100%;border:0px solid #ccc;" id="load_frame">
+                <div class="w3-bar ">
+                    <iframe src="loads" style="height:120px;width:100%;border:0px solid #ccc;" id="load_frame">
                     </iframe>
                 </div>
-                <div class="w3-bar w3-teal">
-                    <iframe src="boundaries.html" style="height:120px;width:100%;border:0px solid #ccc;">
+                <div class="w3-bar ">
+                    <iframe src="boundaries" style="height:120px;width:100%;border:0px solid #ccc;" id="boundary_frame">
                     </iframe>
                 </div>
 
+                <div class="w3-bar-item w3-button w3-mobile w3-padding w3-indigo w3-block"
+                id="run_button">RUN</div>
+
             </form>
-            <div class="w3-col l6 m8 s12" style="width:500px">
+            <div class="w3-col l7 m7 s12">
                 <!--Vizualization window -->
-                <canvas width="500" height="500" id="seen-canvas"></canvas>
+                <div class="w3-display-container">
+                <svg width="590" height="473" id="seen-canvas"></svg>
+                <span class="w3-display-topright w3-hide" style="" id="text_results">
+                    Max. stress: <br>
+                    Max. displacement:
+                </span>
+                    <span class="w3-display-middle w3-hide" id="loadingSpan">
+                        <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' style='margin: auto; display: block; shape-rendering: auto;' width='156px' height='156px' viewBox='0 0 100 100' preserveAspectRatio='xMidYMid'>
+                             <g transform='translate(50 50)'><g>
+                             <animateTransform attributeName='transform' type='rotate' values='0;40' keyTimes='0;1' dur='0.4608294930875576s' repeatCount='indefinite'></animateTransform><path d='M28.372521918222212 -6 L38.37252191822221 -6 L38.37252191822221 6 L28.372521918222212 6 A29 29 0 0 1 25.59133841084477 13.641238885879133 L25.59133841084477 13.641238885879133 L33.25178284203455 20.069114982744527 L25.53833152579608 29.261648300172265 L17.8778870946063 22.83377220330687 A29 29 0 0 1 10.835683244987576 26.89959049157246 L10.835683244987576 26.89959049157246 L12.57216502165688 36.747668021694544 L0.7544719855103847 38.831446153697705 L-0.9820097911589196 28.983368623575625 A29 29 0 0 1 -8.990108536404469 27.57132475061123 L-8.990108536404469 27.57132475061123 L-13.990108536404467 36.231578788455614 L-24.382413381817734 30.23157878845562 L-19.382413381817734 21.571324750611236 A29 29 0 0 1 -24.609328619685847 15.342129737696496 L-24.609328619685847 15.342129737696496 L-34.006254827544936 18.762331170953185 L-38.11049654745296 7.486019721522283 L-28.713570339593876 4.065818288265594 A29 29 0 0 1 -28.713570339593876 -4.065818288265587 L-28.713570339593876 -4.065818288265587 L-38.11049654745296 -7.486019721522274 L-34.006254827544936 -18.762331170953175 L-24.60932861968585 -15.342129737696489 A29 29 0 0 1 -19.38241338181775 -21.571324750611222 L-19.38241338181775 -21.571324750611222 L-24.382413381817752 -30.231578788455607 L-13.990108536404492 -36.23157878845561 L-8.990108536404488 -27.571324750611225 A29 29 0 0 1 -0.9820097911589332 -28.983368623575625 L-0.9820097911589332 -28.983368623575625 L0.7544719855103663 -38.831446153697705 L12.572165021656863 -36.747668021694544 L10.835683244987564 -26.899590491572464 A29 29 0 0 1 17.87788709460629 -22.83377220330688 L17.87788709460629 -22.83377220330688 L25.538331525796067 -29.261648300172276 L33.251782842034544 -20.06911498274454 L25.591338410844767 -13.641238885879144 A29 29 0 0 1 28.372521918222212 -6.000000000000007 M0 -16A16 16 0 1 0 0 16 A16 16 0 1 0 0 -16' fill='#1d0e0b'></path></g></g>
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="w3-bar w3-hide" id="outputBar">
+                    <button class="w3-bar-item w3-button w3-round w3-border" style="margin-right:8px;width:190px"
+                            onclick="updateDisplacement()" id="displacement">Displacement ON</button>
+                    <button class="w3-bar-item w3-button w3-round w3-border" style="margin-right:8px;width:190px"
+                            onclick="updateFieldOutput()" id="fieldOutput">Von Mises stress</button>
+                </div>
             </div>
         </div>
     </div>
