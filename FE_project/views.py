@@ -1,10 +1,8 @@
 import json
-
 from django.shortcuts import render
 from django_ajax.decorators import ajax
 from django.views.decorators.csrf import csrf_exempt
-from .backend_FE import FE_classes, FE_Plots
-import time
+from .backend_FE import FE_classes
 
 def fe_project(request):
     context = {}
