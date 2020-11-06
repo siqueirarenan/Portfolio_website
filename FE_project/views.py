@@ -68,7 +68,7 @@ def run_FE_project(request):
             func_z = lambda z: z == float(F['z_f'])
 
         regL = part.NodeRegionFromFunction(lambda x, y, z: func_x(x) and func_y(y) and func_z(z))
-        mdl.ConcentratedForce('Load-' + str(count), 'Step-1', region=regL, cf1=float(F['fx']), cf2=float(F['fy']), cf3=float(F['fz']))
+        mdl.ConcentratedForce('Load-' + str(count), 'Step-1', region=regL, cf1=float(F['fx'] if F['fx']!="" else 0), cf2=float(F['fy'] if F['fy']!="" else 0), cf3=float(F['fz'] if F['fz']!="" else 0))
         count += 1
 
     #Boundary conditions

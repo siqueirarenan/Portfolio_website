@@ -10,46 +10,46 @@
     <script src="{% static 'FE_project/seen.js'%}"></script>
     <script type="text/coffeescript" src="{% static 'FE_project/Coffeescript.coffee'%}"></script>
 </head>
-<body class="w3-teal"  onchange="update_boundary_table()">
-<div class="w3-bar w3-teal w3-top">
+<body class="w3-light-grey"  onchange="update_boundary_table()">
+<div class="w3-bar  w3-top">
     <div class="w3-bar-item w3-padding">Boundaries</div>
 </div>
-<div class="w3-bar w3-teal" style="height:35px"></div>
-<div class="w3-bar w3-teal" id="Boundary1"  style="padding-left:16px">
-    <input onchange="updateBoundaries(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+<div class="w3-bar" style="height:35px"></div>
+<div class="w3-bar" id="Boundary1"  style="padding-left:16px">
+    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="xb1" max="99" min="0" placeholder="x" value=">=0"
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateBoundaries(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="yb1" max="99" min="0" placeholder="y" value=">=0"
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateBoundaries(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
+    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
            type="text" id="zb1" max="99" min="0" placeholder="z" value="0"
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
 
     <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border" style="color:white;background-color:#a1a1a1;"
-            onclick="buttonBC(this.id);updateBoundaries(this.id)" id="Bx1" value="1">x</button>
+            onclick="buttonBC(this.id);updateShape()" id="Bx1" value="1">x</button>
     <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border" style="color:white;background-color:#a1a1a1;"
-            onclick="buttonBC(this.id);updateBoundaries(this.id)" id="By1" value="1">y</button>
+            onclick="buttonBC(this.id);updateShape()" id="By1" value="1">y</button>
     <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border" style="color:white;background-color:#a1a1a1;"
-            onclick="buttonBC(this.id);updateBoundaries(this.id)" id="Bz1" value="1">z</button>
+            onclick="buttonBC(this.id);updateShape()" id="Bz1" value="1">z</button>
 </div>
-<div class="w3-bar w3-teal" id="Boundary2"  style="padding-left:16px">
-    <input onchange="updateBoundaries(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+<div class="w3-bar " id="Boundary2"  style="padding-left:16px">
+    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="xb2" max="99" min="0" placeholder="x" value=""
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateBoundaries(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="yb2" max="99" min="0" placeholder="y" value=""
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateBoundaries(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
+    <input onchange="updateShape()" class="w3-input w3-light-grey w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
            type="text" id="zb2" max="99" min="0" placeholder="z" value=""
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
 
     <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border"
-            onclick="buttonBC(this.id);updateBoundaries(this.id)" id="Bx2" value="0">x</button>
+            onclick="buttonBC(this.id);updateShape()" id="Bx2" value="0">x</button>
     <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border"
-            onclick="buttonBC(this.id);updateBoundaries(this.id)" id="By2" value="0">y</button>
+            onclick="buttonBC(this.id);updateShape()" id="By2" value="0">y</button>
     <button class="w3-bar-item w3-button bp w3-hover-grey w3-round w3-border"
-            onclick="buttonBC(this.id);updateBoundaries(this.id)" id="Bz2" value="0">z</button>
+            onclick="buttonBC(this.id);updateShape()" id="Bz2" value="0">z</button>
 </div>
 </body>
 </html>

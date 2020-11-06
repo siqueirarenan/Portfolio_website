@@ -46,12 +46,7 @@ function buttonBC(id){
         document.getElementById(id).style = ""
     }
 }
-function onload(){
-    document.getElementById('load_frame').contentWindow.updateLoads = updateLoads;
-    document.getElementById('load_frame').contentWindow.removeLoads = removeLoads;
-    document.getElementById('boundary_frame').contentWindow.updateBoundaries = updateBoundaries;
-    document.getElementById('boundary_frame').contentWindow.removeBoundaries = removeBoundaries;
-    }
+
 
 function update_load_table(){
     cond = false

@@ -2,7 +2,6 @@
 
 width  = parseInt(document.getElementById("seen-canvas").width.baseVal.value)
 height = parseInt(document.getElementById("seen-canvas").height.baseVal.value)
-scale_coef = 4.5
 
 # Create empty scene and render context
 scene = new seen.Scene
@@ -24,63 +23,37 @@ dragger.on('drag.rotate', (e) ->
   context.render()
 )
 
-#MBB beam
-W=document.getElementById("mbb_width").value
-H=document.getElementById("mbb_height").value
-L=document.getElementById("mbb_length").value
-ms=document.getElementById("eleSize").value
-ne_w = Math.round(W / ms)  # Calculating number of elements on each side
-ne_h = Math.round(H / ms)
-ne_l = Math.round(L / ms)
-ms_w = W / ne_w
-ms_h = H / ne_h
-ms_d = L / ne_l  # calculating element sizes
-Nodes = []
-for k in [0..ne_l]
-    for j in [0..ne_h]
-        for i in [0..ne_w]
-            Nodes.push seen.P(i * ms_w, j * ms_h, k * ms_d)  # Assigning coordinates
-Elements_connectivity = []
-for k in [0..ne_l - 1]  # Constructing connectivity vertor and each MeshElement object
-    for j in [0..ne_h - 1]
-        for i in [0..ne_w - 1]
-            connectivity = []  # By the iterator, not the label
-            for kk in [0, 1]
-                for jj in [0, 1]
-                    for ii in [0, 1]
-                        connectivity.push ((ne_h + 1) * (ne_w + 1) * (k + kk) +
-                                         (ne_w + 1) * (j + jj) + i + ii)
-            Elements_connectivity.push connectivity
-            count++
-Elements = []
-count=0
-for e in Elements_connectivity
-    submodel.add(new seen.Shape(count,[new seen.Surface([Nodes[e[0]],Nodes[e[1]],Nodes[e[3]],Nodes[e[2]]]),
-                      new seen.Surface([Nodes[e[2]],Nodes[e[3]],Nodes[e[7]],Nodes[e[6]]]),
-                      new seen.Surface([Nodes[e[6]],Nodes[e[7]],Nodes[e[5]],Nodes[e[4]]]),
-                      new seen.Surface([Nodes[e[4]],Nodes[e[5]],Nodes[e[1]],Nodes[e[0]]]),
-                      new seen.Surface([Nodes[e[0]],Nodes[e[2]],Nodes[e[6]],Nodes[e[4]]]),
-                      new seen.Surface([Nodes[e[1]],Nodes[e[3]],Nodes[e[7]],Nodes[e[5]]])])
-    )
-    count++
-
-#Colors
+#Initiating
 CurrentColorR = 160
 CurrentColorG = 200
 CurrentColorB = 250
-for shape in submodel.children
-    for surf in shape.surfaces
-       surf.fillMaterial.color = seen.Colors.rgb(CurrentColorR, CurrentColorG, CurrentColorB)
-       surf.fillMaterial.specularColor = surf.fillMaterial.color
-       surf.fillMaterial.specularExponent = 60
-       surf.fillMaterial.metallic = true
-       surf.dirty = true
-
-submodel.translate(-W/2,-H/2,-L/2)
+scale_coef = 4.5
 scene.model.scale(scale_coef)
 scene.model.rotx(0.4)
 scene.model.roty(-0.5)
 scene.model.rotz(-0.2)
+W=document.getElementById("mbb_width").value
+H=document.getElementById("mbb_height").value
+L=document.getElementById("mbb_length").value
+Nodes=null
+Loads = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+Loads_model = scene.model.append()
+Loads_model.translate(-W/2,-H/2,-L/2)
+Boundaries = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
+Boundaries_model = scene.model.append()
+Boundaries_model.translate(-W/2,-H/2,-L/2)
+bc_size = 0.1*(Math.min(W, H, L))
+MaxDisplacement = null
+Displacements = null
+VMMises = null
+DeformationEnergyField = null
+VMises = null
+MaxVM = null
+MinVM = null
+MaxDE = null
+MinDE = null
+DisplacementON = null
+FieldOutputON = null
 
 context.render()
 
@@ -119,7 +92,6 @@ root.updateShape = ->
                                              (ne_w + 1) * (j + jj) + i + ii)
                 Elements_connectivity.push connectivity
                 count++
-    Elements = []
     count=0
     for e in Elements_connectivity
         submodel.add(new seen.Shape(count,[new seen.Surface([Nodes[e[0]],Nodes[e[1]],Nodes[e[3]],Nodes[e[2]]]),
@@ -145,7 +117,13 @@ root.updateShape = ->
 
     xform = seen.M().scale(Math.sqrt(W_old**2+H_old**2+L_old**2)/Math.sqrt(W**2+H**2+L**2))
     scene.model.transform(xform)
+    updateColor(CurrentColorR, CurrentColorG, CurrentColorB)
     context.render()
+
+    $("#outputBar").addClass("w3-hide")
+    $("#text_results").addClass("w3-hide")
+    $("#run_button").removeClass("w3-disabled")
+    document.getElementById("run_button").addEventListener("click",run_cs)
 
 root.updateColor = (r,g,b) ->
     CurrentColorR = r
@@ -156,12 +134,10 @@ root.updateColor = (r,g,b) ->
         for surf in shape.surfaces
            surf.fillMaterial.color = seen.Colors.rgb(CurrentColorR, CurrentColorG, CurrentColorB)
            surf.fillMaterial.specularColor = surf.fillMaterial.color
+           surf.fillMaterial.specularExponent = 60
+           surf.fillMaterial.metallic = true
            surf.dirty = true
     context.render()
-
-Loads = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-Loads_model = scene.model.append()
-Loads_model.translate(-W/2,-H/2,-L/2)
 
 root.updateLoads = (id) ->
     i = String(id).substr(2,1)
@@ -194,11 +170,15 @@ root.updateLoads = (id) ->
 
     load_group = Loads_model.append()
     func = (x,y,z) -> func_x(x) & func_y(y) & func_z(z)
+    count = 0
+    for n in Nodes #Counting nodes to ajust size of th arrow
+        if func(n.x,n.y,n.z)
+            count++
     for n in Nodes
         if func(n.x,n.y,n.z)
-            load_group.add(new seen.Shapes.arrow(1,(norm/8) + 2,1,3)
+            load_group.add(new seen.Shapes.arrow(1,(norm/(8*count)) + 2,1,3)
                    .fill('#000000')
-                   .translate(-((norm/8) + 2)-3,0,0)
+                   .translate(-((norm/(8*count)) + 2)-3,0,0)
                    .rotz(Math.PI)
                    .matrix([((norm**2)+c*(-(fy**2)-(fz**2)))/(norm**2), -fy/(norm), -fz/(norm),  0,
                             fy/(norm) , ((norm**2)-c*(fy**2))/(norm**2) , (-c*fy*fz)/(norm**2) , 0,
@@ -215,11 +195,6 @@ root.removeLoads = ->
             Loads_model.remove(Loads[count-1])
             Loads[count-1] = null
     context.render()
-
-Boundaries = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-Boundaries_model = scene.model.append()
-Boundaries_model.translate(-W/2,-H/2,-L/2)
-bc_size = 0.1*(Math.min(W, H, L))
 
 root.updateBoundaries = (id) ->
     i = String(id).substr(2,1)
@@ -278,17 +253,8 @@ root.removeBoundaries = ->
             Boundaries[count-1] = null
     context.render()
 
-MaxDisplacement = null
-Displacements = null
-VMMises = null
-DeformationEnergyField = null
-VMises = null
-MaxVM = null
-MinVM = null
-MaxDE = null
-MinDE = null
-
 root.run_cs = ->
+    $("#loadingSpan").removeClass("w3-hide")
     submit_obj =
         'Emodul' : document.getElementById("Emodul").value
         'Poisson' : document.getElementById("Poisson").value
@@ -329,25 +295,35 @@ root.run_cs = ->
         MaxDE = obj_out.content.MaxDE
         MinDE = obj_out.content.MinDE
 
+        for l in Loads
+            Loads_model.remove(l)
+        for b in Boundaries
+            Boundaries_model.remove(b)
+
+        DisplacementON = 1
+        FieldOutputON = 1
+
         updateDisplacement()
         updateFieldOutput()
 
         $("#outputBar").removeClass("w3-hide")
+        $("#text_results").removeClass("w3-hide")
+        $("#text_results").html("Max. stress: " + MaxVM.toFixed(3) + "<br>Max. displacement: " + MaxDisplacement.toFixed(3))
+        $("#run_button").addClass("w3-disabled")
+        document.getElementById("run_button").removeEventListener("click",run_cs)
+        $("#loadingSpan").addClass("w3-hide")
         )
 
-    #MaxStress
-    #Max displacement
 
-DisplacementON = 1
 root.updateDisplacement = ->
     if DisplacementON == 1
         sign = 1
         DisplacementON = 0
-        #$("#displacement").color("Displacement ON")
+        $("#displacement").text("Displacement ON")
     else
         sign = -1
         DisplacementON = 1
-        #$("#displacement").color("Displacement OFF")
+        $("#displacement").text("Displacement OFF")
     scale_factor = 0.15*Math.max(W, H, L)/MaxDisplacement
     #Displacements
     i = 0
@@ -356,26 +332,23 @@ root.updateDisplacement = ->
         n.y = n.y + sign*Displacements[i][1]*scale_factor
         n.z = n.z + sign*Displacements[i][2]*scale_factor
         i++
-    scene.model.remove(Loads_model)
-    scene.model.remove(Boundaries_model)
     for shape in submodel.children
         for surf in shape.surfaces
            surf.dirty = true
     context.render()
 
-FieldOutputON = 1
 root.updateFieldOutput = ->
     if FieldOutputON == 1 #Von Mises
         Field = VMises
         MaxField = MaxVM
         MinField = MinVM
-        $("#fieldOutput").text("Von Mises Stress")
+        $("#fieldOutput").text("Von Mises stress")
         FieldOutputON = 2
     else if FieldOutputON == 2 #Energy
         Field = DeformationEnergyField
         MaxField = MaxDE
         MinField = MinDE
-        $("#fieldOutput").text("Deformation Energy")
+        $("#fieldOutput").text("Deformation energy")
         FieldOutputON = 0
     else         #No field
         $("#fieldOutput").text("No field output")
@@ -400,6 +373,11 @@ root.updateFieldOutput = ->
             surf.dirty = true
     context.render()
 
-
-
-
+root.onload = ->
+    document.getElementById('load_frame').contentWindow.updateLoads = updateLoads;
+    document.getElementById('load_frame').contentWindow.removeLoads = removeLoads;
+    document.getElementById('load_frame').contentWindow.updateShape = updateShape;
+    document.getElementById('boundary_frame').contentWindow.updateBoundaries = updateBoundaries;
+    document.getElementById('boundary_frame').contentWindow.removeBoundaries = removeBoundaries;
+    document.getElementById('boundary_frame').contentWindow.updateShape = updateShape;
+    updateShape()

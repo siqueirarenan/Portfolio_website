@@ -10,45 +10,45 @@
     <script src="{% static 'FE_project/seen.js'%}"></script>
     <script type="text/coffeescript" src="{% static 'FE_project/Coffeescript.coffee'%}"></script>
 </head>
-<body class="w3-teal" onchange="update_load_table()">
-<div class="w3-bar w3-teal w3-top">
+<body class="" onchange="update_load_table()">
+<div class="w3-bar  w3-top">
     <div class="w3-bar-item w3-padding" style="margin-right:42px">Loads</div>
 </div>
-<div class="w3-bar w3-teal" style="height:35px"></div>
-<div class="w3-bar w3-teal" id="Force1" style="padding-left:16px">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+<div class="w3-bar " style="height:35px"></div>
+<div class="w3-bar " id="Force1" style="padding-left:16px">
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="xf1" max="99" min="0" placeholder="x" value=">=0" name="i_test"
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="yf1" max="99" min="0" placeholder="y" value="0"
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
            type="text" id="zf1" max="99" min="0" placeholder="z" value="80"
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
 
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="number" id="Fx1" max="99" min="-99" placeholder="Fx" value="0">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
-           type="number" id="Fy1" max="99" min="-99" placeholder="Fy" value="-10">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
+           type="number" id="Fy1" max="99" min="-99" placeholder="Fy" value="-5">
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="number" id="Fz1" max="99" min="-99" placeholder="Fz" value="0">
 </div>
-<div class="w3-bar w3-teal" id="Force2" style="padding-left:16px">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+<div class="w3-bar " id="Force2" style="padding-left:16px">
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="xf2" max="99" min="0" placeholder="x"  value=""
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="text" id="yf2" max="99" min="0" placeholder="y"  value=""
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field extramargin"
            type="text" id="zf2" max="99" min="0" placeholder="z"  value=""
            onblur="if (/^(!=|>=|<|>|<=)?[0-9]*(\.[0-9])?$/g.test(this.value)) {} else {this.value=''}">
 
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="number" id="Fx2" max="99" min="-99" placeholder="Fx" value="">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="number" id="Fy2" max="99" min="-99" placeholder="Fy" value="">
-    <input onchange="updateLoads(this.id)" class="w3-input w3-teal w3-bar-item w3-hover-white w3-border w3-round short_field"
+    <input onchange="updateShape()" class="w3-input  w3-bar-item w3-hover-white w3-border w3-round short_field"
            type="number" id="Fz2" max="99" min="-99" placeholder="Fz" value="">
 </div>
 </body>
