@@ -1,7 +1,5 @@
 from . import FE_solver
 import pickle
-from tkinter import Tk, Label, Entry, Button, W
-
 
 def openMdb(file_name):  # function to open a model data base
     with open(file_name, 'rb') as mdbinput:
@@ -13,26 +11,6 @@ def openOdb(file_name):
     with open(file_name, 'rb') as odbinput:
         odb = pickle.load(odbinput)
     return odb
-
-
-def getInputs(parameters, dialogTitle='Inputs'):
-    window = Tk()
-    window.title('BESO for FE Project')
-    r = 0
-    entries = []
-    for p in parameters:
-        Label(window, text=p[0]).grid(row=r, column=0)
-        e = Entry(window)
-        e.insert(10, p[1])
-        e.grid(row=r, column=1, sticky=W)
-        entries += [e.get()]
-        r += 1
-    OKbutton = Button(window, text='OK', command=window.quit)
-    OKbutton.grid(row=r, column=0, sticky=W)
-    window.mainloop()
-    window.destroy()
-    return entries
-
 
 class Mdb:  # class with all the input information in a file (model data base)
     def __init__(self):
