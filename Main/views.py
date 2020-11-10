@@ -1,19 +1,42 @@
 from django.shortcuts import render
-#from django.template import loader
 from django.http import HttpResponseRedirect
-#from django.core.mail import send_mail
-#from django.core import mail
-#from django.db import models
-#import smtplib
 from string import Template
 import requests
 from django.conf import settings
-from pathlib import Path
-#from email.mime.multipart import MIMEMultipart
-#from email.mime.text import MIMEText
+
 
 def index(request,msg_sent_bool=0):
-    context = {'msg_sent_bool': str(msg_sent_bool)}
+    projects = ProjectsList()
+    projects += [ProjectItem("Finite Element Analysis Web App",
+                          "Web application with 3D configuration on the client-side and numeric calculations on the serve-side",
+                          ["python-logo.png","coffeescript.png","javascript.png","django.png",
+                           "ajax.png","seen.png"],
+                          "FEproject.png",
+                          "FE_project", True)]
+    projects += [ProjectItem("Sight Reading Trainner Web App",
+                             "Java web application running with no need for support on the browser.",
+                             ["java.png","maven.png","jpro.png","jfugue.png",
+                              "docker.png"],
+                             "sightreading.PNG",
+                             "https://sight-reading-trainer-webapp.herokuapp.com/", True)]
+    projects += [ProjectItem("Duolingo Chrome Extension",
+                             "Chrome extension for adding sentence related pictures to the Duolingo app.",
+                             ["javascript.png","react.jpg","html.png","chrome.png"],
+                             "Duolingo.png",
+                             "https://github.com/siqueirarenan/Duolingo_Pic")]
+    projects += [ProjectItem("Topology Optimization Plug-in",
+                             "Plug-in to run a self-developed topology optimization method in Abaqus CAE.",
+                             ["python-logo.png","abaqus.png"],
+                             "IZEOabaqus2.png",
+                             "https://github.com/siqueirarenan/IZEO_Topology_optimization_Abaqus_script")]
+    projects += [ProjectItem("COVID-19 Data Analysis",
+                             "In-development database and UI for analysis of COVID-19 statistics.",
+                             ["python-logo.png","django.png","react.jpg","mysql.jpg","restapi.png"],
+                             None,
+                             "https://github.com/siqueirarenan/Coronavirus-data-analysis")]
+
+    context = {'msg_sent_bool': str(msg_sent_bool),
+               'projects' : projects}
     return render(request,'Main/index.html',context)
 
 
@@ -40,34 +63,27 @@ def contact_submit(request):
         return HttpResponseRedirect("/2#contact")
 
 
+class ProjectItem:
+    def __init__(self, name, text, tools, main_pic, href, tryYourself=False):
+        self.name = name
+        self.text = text
+        self.tools = tools
+        self.mainPic = main_pic
+        self.href = href
+        self.tryYourself = tryYourself
 
+class ProjectsList:
+    def __init__(self):
+        self.elements = []
 
+    def __getitem__(self, item):
+        return self.elements[item]
 
-    # set up the SMTP server
-    #s = smtplib.SMTP(host='smtp-mail.outlook.com', port=587)
-    #s.ehlo()
-    #s.starttls()
-    #s.login("maitsuada@outlook.de", "Raquoasi7&HM")
+    def __add__(self, other):
+        assert (isinstance(other[0], ProjectItem))
+        self.elements += other
 
-    #msg = MIMEMultipart()       # create a message
+        return self
 
-    # add in the actual person name to the message template
-
-    # setup the parameters of the message
-    #msg['From']="maitsuada@outlook.de"
-    #msg['To']="renansiqueira@gmail.com"
-    #msg['Subject']="Portfolio Contact Form - " + v_subject
-
-    # add in the message body
-    #msg.attach(MIMEText(message, 'plain'))
-
-    # send the message via the server set up earlier.
-    #s.send_message(msg)
-
-    #del msg
-    #s.quit()
-
-
-
-
-
+    def __len__(self):
+        return len(self.elements)

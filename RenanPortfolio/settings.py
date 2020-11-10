@@ -23,37 +23,29 @@ heroku config:set DEBUG_COLLECTSTATIC=1
 manage.py check --deploy
 """
 
-from pathlib import Path
 import django_heroku
 import os
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-#BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #for heroku?
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) #for heroku?
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-f = open(BASE_DIR / "RenanPortfolio/key.txt",'r')
+f = open(os.path.join(BASE_DIR,"RenanPortfolio/key.txt"),'r')
 key = f.readline()
 f.close()
-SECRET_KEY = key
+SECRET_KEY = key[0]
 
 # SECURITY WARNING: don't run with debug turned on in production!
-import socket
-
-if socket.gethostname() == "Heroku":
-    DEBUG = False
-    ALLOWED_HOSTS = [".herokuapp.com",]
-else:
-    DEBUG = True
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1",]
+DEBUG = False
+ALLOWED_HOSTS = ["localhost", "127.0.0.1",".herokuapp.com"]
 
 ADMINS = [('renansiqueira', 'renansiqueira@gmail.com')]
-
 
 # Application definition
 
@@ -69,12 +61,11 @@ INSTALLED_APPS = [
     'django_ajax'
 ]
 
-MIDDLEWARE_CLASSES = (
-    'whitenoise.middleware.WhiteNoiseMiddleware')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',            #to manage static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -85,9 +76,7 @@ MIDDLEWARE = [
 
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = True
-
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
 ROOT_URLCONF = 'RenanPortfolio.urls'
 
 TEMPLATES = [
@@ -108,17 +97,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'RenanPortfolio.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -138,32 +125,47 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'   #Is what goes to the static tag in the HTML inside the app
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR, 'static'),
     ]
-#STATIC_ROOT = "/var/www/example.com/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #for Heroku
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
 
+#Email
+DEFAULT_FROM_EMAIL = 'mailgun@sandboxd8e1b4aae4974cb8a880131dee352f01.mailgun.org'
+SERVER_EMAIL = 'mailgun@sandboxd8e1b4aae4974cb8a880131dee352f01.mailgun.org'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'postmaster@sandboxd8e1b4aae4974cb8a880131dee352f01.mailgun.org'
+EMAIL_HOST_PASSWORD = key[1]
+EMAIL_USE_TLS = True
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
 

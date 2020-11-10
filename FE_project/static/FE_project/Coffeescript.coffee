@@ -23,10 +23,12 @@ dragger.on('drag.rotate', (e) ->
   context.render()
 )
 
-#Initiating
+#INITIATING
+#Initial color
 CurrentColorR = 160
 CurrentColorG = 200
 CurrentColorB = 250
+#Standard scale and initial view
 scale_coef = 4.5
 scene.model.scale(scale_coef)
 scene.model.rotx(0.4)
@@ -35,14 +37,16 @@ scene.model.rotz(-0.2)
 W=document.getElementById("mbb_width").value
 H=document.getElementById("mbb_height").value
 L=document.getElementById("mbb_length").value
+#Initiating global variables
 Nodes=null
 Loads = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 Loads_model = scene.model.append()
-Loads_model.translate(-W/2,-H/2,-L/2)
+Loads_model.translate(-W/2,-H/2,-L/2)   #Adjusting coordinate systems
 Boundaries = [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
 Boundaries_model = scene.model.append()
-Boundaries_model.translate(-W/2,-H/2,-L/2)
+Boundaries_model.translate(-W/2,-H/2,-L/2)    #Adjusting coordinate systems
 bc_size = 0.1*(Math.min(W, H, L))
+#Result variables, response from AJAX
 MaxDisplacement = null
 Displacements = null
 VMMises = null
@@ -57,14 +61,18 @@ FieldOutputON = null
 
 context.render()
 
+#Making functions global and accessible from HTML
 root = exports ? this
+
+#Main function for updating the shape on every parameter change
+#Calls all other 'update' functions
 root.updateShape = ->
-    W_old = W
+    W_old = W     #Used to adjust automatic zoom
     H_old = H
     L_old = L
-    scene.model.remove(submodel)
+    scene.model.remove(submodel)       #Delete and recreate the whole scene
     submodel = scene.model.append()
-    #MBB beam
+    #MBB beam - same process as in the python files
     W=document.getElementById("mbb_width").value
     H=document.getElementById("mbb_height").value
     L=document.getElementById("mbb_length").value
@@ -75,7 +83,7 @@ root.updateShape = ->
     ms_w = W / ne_w
     ms_h = H / ne_h
     ms_d = L / ne_l  # calculating element sizes
-    Nodes = []
+    Nodes = []       #Array with all the nodes objects
     for k in [0..ne_l]
         for j in [0..ne_h]
             for i in [0..ne_w]
@@ -93,7 +101,7 @@ root.updateShape = ->
                 Elements_connectivity.push connectivity
                 count++
     count=0
-    for e in Elements_connectivity
+    for e in Elements_connectivity     #Creating the surfaces
         submodel.add(new seen.Shape(count,[new seen.Surface([Nodes[e[0]],Nodes[e[1]],Nodes[e[3]],Nodes[e[2]]]),
                           new seen.Surface([Nodes[e[2]],Nodes[e[3]],Nodes[e[7]],Nodes[e[6]]]),
                           new seen.Surface([Nodes[e[6]],Nodes[e[7]],Nodes[e[5]],Nodes[e[4]]]),
@@ -104,27 +112,29 @@ root.updateShape = ->
         count++
     for shape in submodel.children
         for surf in shape.surfaces
-           surf.dirty = true
+           surf.dirty = true        #Need for instant update in the canvas
     submodel.translate(-W/2,-H/2,-L/2)
-
+    #Update Loads
     Loads_model.translate((W_old/2)-(W/2),(H_old/2)-(H/2),(L_old/2)-(L/2))
     for id in [1..document.getElementById("load_frame").contentWindow.document.body.children.length - 2]
         updateLoads("ff" + id)
-
+    #Update boundaries
     Boundaries_model.translate((W_old/2)-(W/2),(H_old/2)-(H/2),(L_old/2)-(L/2))
     for id in [1..document.getElementById("boundary_frame").contentWindow.document.body.children.length - 2]
         updateBoundaries("ff" + id)
-
+    #Automatic scaling/zoom
     xform = seen.M().scale(Math.sqrt(W_old**2+H_old**2+L_old**2)/Math.sqrt(W**2+H**2+L**2))
     scene.model.transform(xform)
+    #Set the color to the last one determined
     updateColor(CurrentColorR, CurrentColorG, CurrentColorB)
     context.render()
-
+    #If shape is updated, set the controls out of simulation results, back to first screen
     $("#outputBar").addClass("w3-hide")
     $("#text_results").addClass("w3-hide")
     $("#run_button").removeClass("w3-disabled")
     document.getElementById("run_button").addEventListener("click",run_cs)
 
+#Change color
 root.updateColor = (r,g,b) ->
     CurrentColorR = r
     CurrentColorG = g
@@ -139,6 +149,7 @@ root.updateColor = (r,g,b) ->
            surf.dirty = true
     context.render()
 
+#Update load arrows, set right size and direction
 root.updateLoads = (id) ->
     i = String(id).substr(2,1)
     x_f = document.getElementById("load_frame").contentWindow.document.getElementById("xf" + i).value
@@ -147,15 +158,11 @@ root.updateLoads = (id) ->
     fx = document.getElementById("load_frame").contentWindow.document.getElementById("Fx" + i).value
     fy = document.getElementById("load_frame").contentWindow.document.getElementById("Fy" + i).value
     fz = document.getElementById("load_frame").contentWindow.document.getElementById("Fz" + i).value
-
     Loads_model.remove(Loads[i - 1])
     Loads[i - 1] = null
-
-    c = 1/(1+(fx))
     norm = Math.sqrt((fx**2) + (fy**2) + (fz**2))
     c = 1/(1+(fx/norm))
-
-    if ("=" in x_f) | (">" in x_f) | ("<" in x_f)
+    if ("=" in x_f) | (">" in x_f) | ("<" in x_f)       #Determining if entry is a equation of value
         func_x = (x) -> eval("x".concat(x_f))
     else
         func_x = (x) -> x == parseInt(x_f)
@@ -167,15 +174,14 @@ root.updateLoads = (id) ->
         func_z = (z) -> eval("z".concat(z_f))
     else
         func_z = (z) -> z == parseInt(z_f)
-
     load_group = Loads_model.append()
     func = (x,y,z) -> func_x(x) & func_y(y) & func_z(z)
     count = 0
-    for n in Nodes #Counting nodes to ajust size of th arrow
+    for n in Nodes #Counting nodes with forces to adjust size of the arrow
         if func(n.x,n.y,n.z)
             count++
-    for n in Nodes
-        if func(n.x,n.y,n.z)
+    for n in Nodes #Adding an arrow to each node with force
+        if func(n.x,n.y,n.z)  #Boolean function telling wich nodes are under the specification
             load_group.add(new seen.Shapes.arrow(1,(norm/(8*count)) + 2,1,3)
                    .fill('#000000')
                    .translate(-((norm/(8*count)) + 2)-3,0,0)
@@ -188,6 +194,7 @@ root.updateLoads = (id) ->
     Loads[i - 1] = load_group
     context.render()
 
+#Remove loads function (needed?)
 root.removeLoads = ->
     n_loads = document.getElementById("load_frame").contentWindow.document.body.children.length - 2
     for count in [1..Loads.length]
@@ -196,6 +203,7 @@ root.removeLoads = ->
             Loads[count-1] = null
     context.render()
 
+#Boundary update, same principle of the load update
 root.updateBoundaries = (id) ->
     i = String(id).substr(2,1)
     x_b = document.getElementById("boundary_frame").contentWindow.document.getElementById("xb" + i).value
@@ -204,10 +212,8 @@ root.updateBoundaries = (id) ->
     b_x = document.getElementById("boundary_frame").contentWindow.document.getElementById("Bx" + i).value #0 or 1
     b_y = document.getElementById("boundary_frame").contentWindow.document.getElementById("By" + i).value
     b_z = document.getElementById("boundary_frame").contentWindow.document.getElementById("Bz" + i).value
-
     Boundaries_model.remove(Boundaries[i - 1])
     Boundaries[i - 1] = null
-
     if ("=" in x_b) | (">" in x_b) | ("<" in x_b)    #'Differencing between pure value and inequation
         func_x = (x) -> eval("x".concat(x_b))
     else
@@ -220,7 +226,6 @@ root.updateBoundaries = (id) ->
         func_z = (z) -> eval("z".concat(z_b))
     else
         func_z = (z) -> z == parseInt(z_b)
-
     boundaries_group = Boundaries_model.append()     #Group created for 1 BC made by inequations (many nodes)
     func = (x,y,z) -> func_x(x) & func_y(y) & func_z(z)
     for n in Nodes
@@ -240,11 +245,10 @@ root.updateBoundaries = (id) ->
                                         .rotx(Math.PI/2).fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
                 boundaries_group.add(new seen.Shapes.pyramid().translate(-0.5,-1,-0.5).rotx(Math.PI)
                                         .rotx(Math.PI/2).fill('#A52A2A').scale(bc_size).translate(n.x,n.y,n.z))
-
     Boundaries[i - 1] = boundaries_group
     context.render()
 
-
+#needed?
 root.removeBoundaries = ->
     n_boundaries = document.getElementById("boundary_frame").contentWindow.document.body.children.length - 2
     for count in [1..Boundaries.length]
@@ -253,8 +257,10 @@ root.removeBoundaries = ->
             Boundaries[count-1] = null
     context.render()
 
+#Function called when the use hit RUN
 root.run_cs = ->
-    $("#loadingSpan").removeClass("w3-hide")
+    $("#loadingSpan").removeClass("w3-hide")   #Start showing the loading symbol
+    #Collectiong all inputs
     submit_obj =
         'Emodul' : document.getElementById("Emodul").value
         'Poisson' : document.getElementById("Poisson").value
@@ -283,29 +289,27 @@ root.run_cs = ->
             b_y : document.getElementById("boundary_frame").contentWindow.document.getElementById("By" + i).value
             b_z : document.getElementById("boundary_frame").contentWindow.document.getElementById("Bz" + i).value
          boundaries["Boundary" + i] = JSON.stringify(boundary)
-    submit_obj["Boundaries"] = JSON.stringify(boundaries)
+    submit_obj["Boundaries"] = JSON.stringify(boundaries)  #Inportant step before sending object inside object
+    #AJAX request and result function
     jQuery.post('run',submit_obj, (obj_out) ->
         MaxDisplacement = obj_out.content.MaxDisplacement
         Displacements = obj_out.content.Displacements
-
         VMises = obj_out.content.VMises
         MaxVM = obj_out.content.MaxVM
         MinVM = obj_out.content.MinVM
         DeformationEnergyField = obj_out.content.DeformationEnergyField
         MaxDE = obj_out.content.MaxDE
         MinDE = obj_out.content.MinDE
-
+        #Updating the canvas with the result
         for l in Loads
             Loads_model.remove(l)
         for b in Boundaries
             Boundaries_model.remove(b)
-
         DisplacementON = 1
         FieldOutputON = 1
-
         updateDisplacement()
         updateFieldOutput()
-
+        #Updating user controls view
         $("#outputBar").removeClass("w3-hide")
         $("#text_results").removeClass("w3-hide")
         $("#text_results").html("Max. stress: " + MaxVM.toFixed(3) + "<br>Max. displacement: " + MaxDisplacement.toFixed(3))
@@ -314,7 +318,7 @@ root.run_cs = ->
         $("#loadingSpan").addClass("w3-hide")
         )
 
-
+#Function to show/hide displacement in results
 root.updateDisplacement = ->
     if DisplacementON == 1
         sign = 1
@@ -324,7 +328,7 @@ root.updateDisplacement = ->
         sign = -1
         DisplacementON = 1
         $("#displacement").text("Displacement OFF")
-    scale_factor = 0.15*Math.max(W, H, L)/MaxDisplacement
+    scale_factor = 0.15*Math.max(W, H, L)/MaxDisplacement  #Automatic displacement scale
     #Displacements
     i = 0
     for n in Nodes
@@ -337,6 +341,7 @@ root.updateDisplacement = ->
            surf.dirty = true
     context.render()
 
+#Function to plot field outputs in results
 root.updateFieldOutput = ->
     if FieldOutputON == 1 #Von Mises
         Field = VMises
@@ -367,17 +372,20 @@ root.updateFieldOutput = ->
             B = (1 - stress_ratio) * 255
             A = 150
         for surf in shape.surfaces
-            surf.fillMaterial = new seen.Material()
+            surf.fillMaterial = new seen.Material() #Very important step, since ever element must have different material
             surf.fillMaterial.color = seen.Colors.rgb(R, G, B, A)
             surf.fillMaterial.specularColor = surf.fillMaterial.color
             surf.dirty = true
     context.render()
 
+#Function that runs after the page is firstly fully loaded
 root.onload = ->
+    #Must do so that iframes inside can also reach the functions
     document.getElementById('load_frame').contentWindow.updateLoads = updateLoads;
     document.getElementById('load_frame').contentWindow.removeLoads = removeLoads;
     document.getElementById('load_frame').contentWindow.updateShape = updateShape;
     document.getElementById('boundary_frame').contentWindow.updateBoundaries = updateBoundaries;
     document.getElementById('boundary_frame').contentWindow.removeBoundaries = removeBoundaries;
     document.getElementById('boundary_frame').contentWindow.updateShape = updateShape;
+    #First run of the update shape
     updateShape()

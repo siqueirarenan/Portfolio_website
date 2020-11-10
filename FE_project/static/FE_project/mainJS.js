@@ -46,7 +46,9 @@ function buttonBC(id){
         document.getElementById(id).style = ""
     }
 }
+function create_BESO(){
 
+}
 
 function update_load_table(){
     cond = false
