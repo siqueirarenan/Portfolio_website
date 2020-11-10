@@ -43,3 +43,32 @@ input.short_field{
 .extramargin{
     margin-right:5px !important;
 }
+a{
+    text-decoration-line: none;
+}
+.paralaxPic {
+  /* Set a specific height */
+  height: 330px;
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.MarginSides{
+  margin-right: 16px !important;
+  margin-left: 16px !important;
+  margin-bottom: 16px !important;
+}
+.PaddingSides{
+  padding-right: 16px !important;
+  padding-left: 16px !important;
+}
+#socialNetworks a img{
+  padding: 10px;
+  float: right;
+  width:6%;
+  min-width:60px;
+  height:auto;
+  filter: contrast(85%);
+}

@@ -14,9 +14,10 @@ def loads(request):
 def boundaries(request):
     return render(request,'FE_project/boundaries.html')
 
-@ajax
-@csrf_exempt
+@ajax         #Package to allow AJAX communication
+@csrf_exempt  #So authorize the run of this function
 def run_FE_project(request):
+    #Loading all variables sent from POST request
     obj = dict(request.POST)
     Emodul = float(obj['Emodul'][0])
     Poisson = float(obj['Poisson'][0])
@@ -27,7 +28,7 @@ def run_FE_project(request):
     Forces = json.loads(obj['Forces'][0])
     Boundaries = json.loads(obj['Boundaries'][0])
 
-    #------------------------------------------------------
+    #-------------------------- Similar to original -----------------------------------
 
     # MODEL CREATION
     mdb = FE_classes.Mdb()
@@ -48,11 +49,11 @@ def run_FE_project(request):
     mdl.FieldOutputRequest('FieldOut-1', 'Step-1', variables=('MISESMAX', 'ESEDEN', 'EVOL', ))
     mdl.HistoryOutputRequest('FieldOut-1', 'Step-1', variables=('ALLWK',))
 
-    # Load conditions
+    # Load conditions - must load all inputs given and interpretate the entries, same as in the frontend
     count = 1
     for Force in Forces.values():
         F = json.loads(Force)
-        if ("=" in F['x_f']) or (">" in F['x_f']) or ("<" in F['x_f']):
+        if ("=" in F['x_f']) or (">" in F['x_f']) or ("<" in F['x_f']):   #Equation or value?
             func_x = lambda x: eval("x" + F['x_f'], {"x": x})
         else:
             func_x = lambda x: x == float(F['x_f'])
@@ -89,30 +90,18 @@ def run_FE_project(request):
         mdl.DisplacementBC('BC-1', 'Step-1', region=regBC, u1=0 if B['b_x']=="1" else None, u2=0 if B['b_y']=="1" else None, u3=0 if B['b_z']=="1" else None)
         count += 1
 
-
-    #mdb.saveAs('Example_model')
-    # t_i = time.time()
-    #
-    # # Job
+    mdb.saveAs('FE_project\\backend_FE\\UserModel')   #needed for the optimization
+    #!!!This should actually save a temporary file for the user in the Jobs name
+    #Or no file should be created at all
     mdb.Job('Job-1', 'Model-1').submit()
     mdb.jobs['Job-1'].waitForCompletion()
-    odb = FE_classes.openOdb('FE_project\\backend_FE\\Output_files\\' + 'Job-1.odb')
-    #
-    # # PLOTS
-    # # FE_Plots.undeformedNodePlot(mdl, part, step)
-    # # FE_Plots.deformedNodePlot(mdl, part, step, odb, scale_factor=1)
-    # # FE_Plots.FieldOutputHexMeshPlot(part, step, odb, 'MISESMAX')
-    # FE_Plots.FieldOutputHexMeshPlot(part, step, odb, 'ESEDEN')
-    # # FE_Plots.HistoryOutputPlot(odb, step, ['ALLWK'])
-    #
-    # # print(time.time() - t_i)
+    odb = FE_classes.openOdb('FE_project\\backend_FE\\Output_files\\' + 'Job-1.odb') #Job is always automatically saved here
 
+    #Send results back
     max_u = 0
     for u in odb.steps['STEP-1'].frames[-1].fieldOutputs['U'].values.original_data:
         for c in u:
             max_u = max(max_u,abs(c))
-
-
 
     return {'MaxDisplacement': max_u,
             'Displacements': odb.steps['STEP-1'].frames[-1].fieldOutputs['U'].values.original_data,
