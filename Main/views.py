@@ -10,7 +10,7 @@ def index(request,msg_sent_bool=0):
     projects += [ProjectItem("Finite Element Analysis Web App",
                           "Web application with 3D configuration on the client-side and numeric calculations on the serve-side",
                           ["python-logo.png","coffeescript.png","javascript.png","django.png",
-                           "ajax.png","seen.png"],
+                           "ajax.png","seen.png","jQuery.png"],
                           "FEproject.png",
                           "FE_project", True)]
     projects += [ProjectItem("Sight Reading Trainner Web App",
